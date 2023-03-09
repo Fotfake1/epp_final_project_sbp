@@ -3,34 +3,45 @@
 import pandas as pd
 
 
-def clean_data(data, data_info):
-    """Clean data set.
+def harmonize_columns(df1, df2):
+    """This function harmonizes the columns of two dataframes.
 
-    Information on data columns is stored in ``data_management/data_info.yaml``.
-
-    Args:
-        data (pandas.DataFrame): The data set.
-        data_info (dict): Information on data set stored in data_info.yaml. The
-            following keys can be accessed:
-            - 'outcome': Name of dependent variable column in data
-            - 'outcome_numerical': Name to be given to the numerical version of outcome
-            - 'columns_to_drop': Names of columns that are dropped in data cleaning step
-            - 'categorical_columns': Names of columns that are converted to categorical
-            - 'column_rename_mapping': Old and new names of columns to be renamend,
-                stored in a dictionary with design: {'old_name': 'new_name'}
-            - 'url': URL to data set
-
-    Returns:
-        pandas.DataFrame: The cleaned data set.
+    The columns of the first dataframe are kept and the second one is modified to have the same columns.
+    Input:
+        df1: first dataframe
+        df2: second dataframe
+    Output:
+        df1: first dataframe with the same columns as the second one
+        df2: second dataframe with the same columns as the first one
 
     """
-    data = data.drop(columns=data_info["columns_to_drop"])
-    data = data.dropna()
-    for cat_col in data_info["categorical_columns"]:
-        data[cat_col] = data[cat_col].astype("category")
-    data = data.rename(columns=data_info["column_rename_mapping"])
+    common_columns = list(df1.columns.intersection(df2.columns))
+    df1 = df1[common_columns]
+    df2 = df2[common_columns]
+    return df1, df2
 
-    numerical_outcome = pd.Categorical(data[data_info["outcome"]]).codes
-    data[data_info["outcome_numerical"]] = numerical_outcome
 
-    return data
+def rbind_dataframes(df1, df2):
+    """
+    This function binds two dataframes by rows
+    Input:
+        df1: first dataframe
+        df2: second dataframe
+    Output:
+        df: dataframe with the rows of df1 and df2.
+    """
+    df1, df2 = harmonize_columns(df1, df2)
+    df = pd.concat([df1, df2], axis=0)
+    return df
+
+
+def delete_rows_with_just_nans(df):
+    """
+    This function deletes the rows of a dataframe that only contain NaNs
+    Input:
+        df: dataframe
+    Output:
+        df: dataframe without the rows that only contain NaNs.
+    """
+    df = df.dropna(how="all")
+    return df
