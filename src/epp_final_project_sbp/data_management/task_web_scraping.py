@@ -10,7 +10,6 @@ from epp_final_project_sbp.config import SRC
 @pytask.mark.produces(SRC / "epp_final_project_sbp" / "data" / "data_raw.csv")
 def task_webscraping(depends_on, produces):
     data = pd.DataFrame()
-    added_leagues = []
 
     information = {
         "beginning_url": "https://www.football-data.co.uk/",
@@ -64,26 +63,6 @@ def task_webscraping(depends_on, produces):
             beginning_url=information["beginning_url"],
             league=information["Leagues"][league]["Leaguename"],
         )
-        for dataset_one in data_sources:
-            for dataset_two in data_sources:
-                if dataset_one != dataset_two:
-                    (
-                        data_sources[dataset_one],
-                        data_sources[dataset_two],
-                    ) = cd.harmonize_columns(
-                        df1=data_sources[dataset_one],
-                        df2=data_sources[dataset_two],
-                    )
-                if dataset_one in added_leagues:
-                    continue
-                else:
-                    if data.empty:
-                        data = data_sources[dataset_one]
-                        added_leagues.append(dataset_one)
-                if dataset_two in added_leagues:
-                    continue
-                else:
-                    data = cd.rbind_dataframes(data, data_sources[dataset_two])
-                    added_leagues.append(dataset_two)
+        data = cd.rbind_list_of_dataframes(data_sources=data_sources, data=data)
     data = cd.delete_rows_with_just_nans(df=data)
     data.to_csv(produces, index=False)

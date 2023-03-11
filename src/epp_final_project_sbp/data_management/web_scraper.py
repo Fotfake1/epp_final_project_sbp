@@ -23,14 +23,7 @@ def download_data(url, years, beginning_url, league):
     download_links : list
         A list of the download links for the csv files.
     """
-    op = webdriver.ChromeOptions()
-    op.add_argument("headless")
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
-    driver.get(url)
-    html = driver.page_source
-    driver.close()
-    soup = BeautifulSoup(html)
-    list(soup.find("a"))
+    soup = __get_soup_file(url=url)
     download_links = []
 
     for a in soup.find_all("a", href=True):
@@ -43,6 +36,28 @@ def download_data(url, years, beginning_url, league):
     download_links = [beginning_url + x for x in download_links]
     data = __download_csvs(download_links=download_links, league=league, years=years)
     return data
+
+
+def __get_soup_file(url):
+    """
+    Gets the soup file.
+    Parameters
+    ----------
+    URL :string
+        The string to the main.
+    Output
+    ------
+    soup : BeautifulSoup
+        The soup file.
+    """
+    op = webdriver.ChromeOptions()
+    op.add_argument("headless")
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
+    driver.get(url)
+    html = driver.page_source
+    driver.close()
+    soup = BeautifulSoup(html)
+    return soup
 
 
 def __download_csvs(download_links, league, years):
