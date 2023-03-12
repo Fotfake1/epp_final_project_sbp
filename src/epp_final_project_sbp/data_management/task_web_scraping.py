@@ -7,10 +7,10 @@ from epp_final_project_sbp.config import SRC
 
 
 @pytask.mark.depends_on({"scripts": ["web_scraper.py", "clean_data.py"]})
-@pytask.mark.produces(SRC / "epp_final_project_sbp" / "data" / "data_raw.csv")
+@pytask.mark.produces(SRC / "data" / "data_raw.csv")
 def task_webscraping(depends_on, produces):
     data = pd.DataFrame()
-
+    data_sources = {}
     information = {
         "beginning_url": "https://www.football-data.co.uk/",
         "years": [
@@ -57,12 +57,12 @@ def task_webscraping(depends_on, produces):
     }
 
     for league in information["Leagues"]:
-        data_sources = ws.download_data(
+        data_sources[league] = ws.download_data(
             url=information["Leagues"][league]["Leagueurl"],
             years=information["years"],
             beginning_url=information["beginning_url"],
             league=information["Leagues"][league]["Leaguename"],
         )
-        data = cd.rbind_list_of_dataframes(data_sources=data_sources, data=data)
+        data = cd.rbind_list_of_dataframes(data_sources=data_sources[league], data=data)
     data = cd.delete_rows_with_just_nans(df=data)
     data.to_csv(produces, index=False)

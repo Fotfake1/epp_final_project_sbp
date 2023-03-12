@@ -1,4 +1,4 @@
-"""All the general configuration of the project."""
+"""This module contains the general configuration of the project."""
 from pathlib import Path
 
 SRC = Path(__file__).parent.resolve()

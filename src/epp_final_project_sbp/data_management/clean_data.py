@@ -53,7 +53,7 @@ def rbind_list_of_dataframes(data_sources, data):
 
     The if statement checks if the dataframe is already in the dataframe data.
     Input:
-        data_source: list of dataframes
+        data_source: dict of dataframes
     Output:
         data: dataframe with the rows of the dataframes in the list.
 
@@ -69,18 +69,17 @@ def rbind_list_of_dataframes(data_sources, data):
                     df1=data_sources[dataset_one],
                     df2=data_sources[dataset_two],
                 )
-            if dataset_one in added_leagues:
+        if dataset_one in added_leagues:
+            continue
+        else:
+            if data.empty:
+                data = data_sources[dataset_one]
+                added_leagues.append(dataset_one)
+            if dataset_two in added_leagues:
                 continue
             else:
-                if data.empty:
-                    data = data_sources[dataset_one]
-                    added_leagues.append(dataset_one)
-                if dataset_two in added_leagues:
-                    continue
-                else:
-                    data = rbind_dataframes(data, data_sources[dataset_two])
-                    added_leagues.append(dataset_two)
-
+                data = pd.DataFrame(rbind_dataframes(data, data_sources[dataset_two]))
+                added_leagues.append(dataset_two)
     return data
 
 
