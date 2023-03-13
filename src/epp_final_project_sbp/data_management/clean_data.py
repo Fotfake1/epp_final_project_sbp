@@ -1,12 +1,14 @@
 """Function(s) for cleaning the data set(s)."""
 
+import numpy as np
 import pandas as pd
 
 
 def harmonize_columns(df1, df2):
-    """This function harmonizes the columns of two dataframes.
+    """This function takes the union of two dataframes and returns to dataframes with
+    these columns.
 
-    The columns of the first dataframe are kept and the second one is modified to have the same columns.
+    Columns, which are only present in one of the two are created as a column and filled with NaNs in the other dataframe.
     Input:
         df1: first dataframe
         df2: second dataframe
@@ -15,9 +17,14 @@ def harmonize_columns(df1, df2):
         df2: second dataframe with the same columns as the first one
 
     """
-    common_columns = list(df1.columns.intersection(df2.columns))
-    df1 = df1[common_columns]
-    df2 = df2[common_columns]
+    df1_columns = df1.columns
+    df2_columns = df2.columns
+    df1_columns_not_in_df2 = df1_columns.difference(df2_columns)
+    df2_columns_not_in_df1 = df2_columns.difference(df1_columns)
+    for column in df1_columns_not_in_df2:
+        df2[column] = np.nan
+    for column in df2_columns_not_in_df1:
+        df1[column] = np.nan
     return df1, df2
 
 

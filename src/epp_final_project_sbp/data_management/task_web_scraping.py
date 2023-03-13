@@ -6,9 +6,8 @@ import epp_final_project_sbp.data_management.web_scraper as ws
 from epp_final_project_sbp.config import SRC
 
 
-@pytask.mark.depends_on({"scripts": ["web_scraper.py", "clean_data.py"]})
 @pytask.mark.produces(SRC / "data" / "data_raw.csv")
-def task_webscraping(depends_on, produces):
+def task_webscraping(produces):
     data = pd.DataFrame()
     data_sources = {}
     information = {
