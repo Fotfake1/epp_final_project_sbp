@@ -37,7 +37,6 @@ def rbind_dataframes(df1, df2):
     Output:
         df: dataframe with the rows of df1 and df2.
     """
-    df1, df2 = harmonize_columns(df1, df2)
     df = pd.concat([df1, df2], axis=0)
     return df
 
@@ -80,13 +79,17 @@ def rbind_list_of_dataframes(data_sources, data):
             continue
         else:
             if data.empty:
+                data = pd.DataFrame()
                 data = data_sources[dataset_one]
                 added_leagues.append(dataset_one)
-            if dataset_two in added_leagues:
-                continue
             else:
-                data = pd.DataFrame(rbind_dataframes(data, data_sources[dataset_two]))
-                added_leagues.append(dataset_two)
+                data = rbind_dataframes(data, data_sources[dataset_one])
+                added_leagues.append(dataset_one)
+        if dataset_two in added_leagues:
+            continue
+        else:
+            data = rbind_dataframes(data, data_sources[dataset_two])
+            added_leagues.append(dataset_two)
     return data
 
 

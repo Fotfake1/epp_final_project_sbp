@@ -1,0 +1,44 @@
+---
+
+beginning_url: https://www.football-data.co.uk/
+
+
+years:
+  - 2223
+  - 2122
+  - 2021
+  - 1920
+  - 1819
+  - 1718
+  - 1617
+  - 1516
+  - 1415
+  - 1314
+  - 1213
+  - 1213
+  - 1112
+
+Leagues:
+  PL:
+    Foldername: PL_data
+    Leaguetag: PL
+    Leaguename: E0
+    Leagueurl: https://www.football-data.co.uk/englandm.php
+
+  BL:
+    Foldername: BL_data
+    Leaguetag: BL
+    Leaguename: D1
+    Leagueurl: https://www.football-data.co.uk/germanym.php
+
+  PD:
+    Foldername: PD_data
+    Leaguetag: PD
+    Leaguename: SP1
+    Leagueurl: https://www.football-data.co.uk/spainm.php
+
+  SA:
+    Foldername: SA_data
+    Leaguetag: SA
+    Leaguename: I1
+    Leagueurl: https://www.football-data.co.uk/italym.php

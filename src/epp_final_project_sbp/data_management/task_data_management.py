@@ -117,7 +117,12 @@ def task_clean_data(depends_on, produces):
     )
     data = data[considered_features]
     data = cd.convert_to_categorical(df=data, columns=categorical_features)
+    data["Date"] = pd.to_datetime(
+        data["Date"],
+        format="%d/%m/%Y",
+        errors="coerce",
+    ).fillna(pd.to_datetime(data["Date"], format="%d/%m/%y", errors="coerce"))
+    data.sort_values(by=["Date"], inplace=True)
     data = data.reset_index()
-    data["Date"] = pd.to_datetime(data["Date"])
     data = cd.convert_to_integer(df=data, columns=integer_features)
     data.to_csv(produces, index=False)

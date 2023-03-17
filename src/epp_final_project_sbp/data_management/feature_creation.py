@@ -31,13 +31,6 @@ def compute_features_last_n_games(df, n):
     df = compute_mean_goals_against_team_last_n_matches(df=df, number_of_matches=n)
     df = compute_mean_goal_difference_last_n_matches(df=df, number_of_matches=n)
     df = compute_mean_corners_got_last_n_games(df=df, number_of_matches=n)
-    df["full_time_result"] = np.where(
-        df.full_time_result == "H",
-        2,
-        np.where((df.full_time_result == "A"), 1, 0),
-    )
-
-    df.fillna(np.nan, inplace=True)
 
     return df
 
@@ -554,4 +547,23 @@ def compute_mean_corners_got_last_n_games(df, number_of_matches):
                 "AwayTeam_mean_corners_got_last_" + str(number_of_matches) + "_matches",
             ] = np.mean(away_team_corners)
 
+    return df
+
+
+def compute_consensus_odds(df, columns_with_odds):
+    """
+    This function computes the consensus odds
+    Input:
+        df: dataframe
+        columns_with_odds: list of columns with the odds
+    Output:
+        df: dataframe with the consensus odds added.
+    """
+    columns_with_odds = [x for x in columns_with_odds if x in list(df.columns)]
+    home_odd_columns = [col for col in columns_with_odds if col.endswith("H")]
+    draw_odd_columns = [col for col in columns_with_odds if col.endswith("D")]
+    away_odd_columns = [col for col in columns_with_odds if col.endswith("A")]
+    df["consensus_odds_home"] = df[home_odd_columns].mean(axis=1)
+    df["consensus_odds_draw"] = df[draw_odd_columns].mean(axis=1)
+    df["consensus_odds_away"] = df[away_odd_columns].mean(axis=1)
     return df
