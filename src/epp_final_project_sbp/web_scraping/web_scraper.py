@@ -23,9 +23,33 @@ def download_data(url, years, beginning_url, league):
     download_links : list
         A list of the download links for the csv files.
     """
-    soup = __get_soup_file(url=url)
-    download_links = []
+    try:
+        soup = __get_soup_file(url=url)
+    except:
+        raise Exception("The url is invalid.")
+    download_links = __create_download_links(
+        soup=soup,
+        beginning_url=beginning_url,
+        years=years,
+        league=league,
+    )
+    data = __download_csvs(download_links=download_links, league=league, years=years)
+    return data
 
+
+def __create_download_links(soup, beginning_url, years, league):
+    """
+    Generates a list of download links for the csv files.
+    Parameters
+    ----------
+    soup : BeautifulSoup
+        The soup file.
+        Output
+        ------
+        download_links : list
+    A list of the download links for the csv files.
+    """
+    download_links = []
     for a in soup.find_all("a", href=True):
         if (
             a["href"].startswith("mmz")
@@ -34,8 +58,7 @@ def download_data(url, years, beginning_url, league):
         ):
             download_links.append(a["href"])
     download_links = [beginning_url + x for x in download_links]
-    data = __download_csvs(download_links=download_links, league=league, years=years)
-    return data
+    return download_links
 
 
 def __get_soup_file(url):

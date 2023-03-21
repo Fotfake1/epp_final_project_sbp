@@ -1,8 +1,7 @@
+import epp_final_project_sbp.data_management.clean_data as cd
+import epp_final_project_sbp.web_scraping.web_scraper as ws
 import pandas as pd
 import pytask
-
-import epp_final_project_sbp.data_management.clean_data as cd
-import epp_final_project_sbp.data_management.web_scraper as ws
 from epp_final_project_sbp.config import SRC
 
 
