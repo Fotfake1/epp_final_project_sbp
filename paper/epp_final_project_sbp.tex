@@ -59,12 +59,12 @@
 
 \begin{document}
 
-\title{EPP final project sbp\thanks{Luis Enrique Kaiser, University of Bonn. Email: \href{mailto:s6lukais@uni-bonn.de}{\nolinkurl{s6lukais [at] uni-bonn [dot] de}}.}}
+\title{EPP final project: Sports betting predictions using Machine Learning\thanks{Luis Enrique Kaiser, University of Bonn. Email: \href{mailto:s6lukais@uni-bonn.de}{\nolinkurl{s6lukais [at] uni-bonn [dot] de}}.}}
 
 \author{Luis Enrique Kaiser}
 
 \date{
-    {\bf Preliminary -- please do not quote}
+    {\bf Preliminary, please do not quote}
     \\[1ex]
     \today
 }
@@ -80,23 +80,16 @@
 
 
 \section{Introduction} % (fold)
-\label{sec:introduction}
+\ label{sec:introduction}
 
-If you are using this template, please cite this item from the references:
-\citet{GaudeckerEconProjectTemplates}.
+I used the following template, originally created by Gaudecker. \citet{GaudeckerEconProjectTemplates}.
 
-The data set for the example project is taken from
-\url{https://www.stem.org.uk/resources/elibrary/resource/28452/large-datasets-stats4schools}.
-It contains data on smoking habits in the UK, with 1691 observations and 12 variables.
-We consider only 4 of the 12 features for the prediction of the variable
-\texttt{smoking}: \texttt{marital\_status}, \texttt{highest\_qualification},
-\texttt{gender} and \texttt{age}. We model the dependence using a Logistic model. All
-numerical features are included linearly, while categorical features are expanded into
-dummy variables. Figures below illustrate the model predictions over the lifetime. You
-will find one figure and one estimation summary table for each installed programming
-language.
-
-
+This project is the first minimum viable version of a project, which I am striving to develop further.
+The goal is to use machine learning to predict the outcome of sports betting markets. In the current version,
+data from the Premier League, the Bundesliga, the Series A and the Primera Division are scraped from a website and
+subsequently used to train a logit model, a KNN model and a random forest model. The models are then used to predict the outcomes of games.
+In the current version, this piece of software can only hardly be used, to actually predict games, since the data I scrape is always backwards looking.
+For the future, I am intending to use live betting data, to further develop the model.
 
 \begin{figure}[H]
 
@@ -106,14 +99,14 @@ language.
     \caption{\emph{Python:} Model predictions of the smoking probability over the
         lifetime. Each colored line represents a case where marital status is fixed to one
         of the values present in the data set.}
-    \label{fig:python-predictions}
+    \ label{fig:python-predictions}
 
 \end{figure}
 
 
 \begin{table}[!h]
     \input{../python/tables/estimation_results.tex}
-    \caption{\label{tab:python-summary}\emph{Python:} Estimation results of the
+    \caption{\ label{tab:python-summary}\emph{Python:} Estimation results of the
         linear Logistic regression.}
 \end{table}
 
@@ -125,7 +118,7 @@ language.
 
 
 \setstretch{1}
-\printbibliography
+\printbibliography{plain}
 \setstretch{1.5}
 
 

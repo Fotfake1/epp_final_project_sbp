@@ -23,18 +23,54 @@ def download_data(url, years, beginning_url, league):
     download_links : list
         A list of the download links for the csv files.
     """
+    assert all(
+        isinstance(elem, str) for elem in years
+    ), "The year list must contain only strings."
+    assert isinstance(beginning_url, str), "The beginning url must be a string."
+    assert isinstance(league, str), "The league must be a string."
+    assert isinstance(url, str), "The url must be a string."
+
     try:
         soup = __get_soup_file(url=url)
     except:
-        raise Exception("The url is invalid.")
+        raise Exception("The url is invalid. Could not get the soup file.")
+
     download_links = __create_download_links(
         soup=soup,
         beginning_url=beginning_url,
         years=years,
         league=league,
     )
+    assert (
+        len(download_links) > 0
+    ), "Download list is empty. This means, that on the url provided, there are no .csv files, which met the download cirteria for years, league and how the url should be structured."
     data = __download_csvs(download_links=download_links, league=league, years=years)
+    assert (
+        len(data) > 0
+    ), "Dictionary is empty, which means that the csv files could not be downloaded."
     return data
+
+
+def __get_soup_file(url):
+    """
+    Gets the soup file.
+    Parameters
+    ----------
+    URL :string
+        The string to the main.
+    Output
+    ------
+    soup : BeautifulSoup
+        The soup file.
+    """
+    op = webdriver.ChromeOptions()
+    op.add_argument("headless")
+    driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
+    driver.get(url)
+    html = driver.page_source
+    driver.close()
+    soup = BeautifulSoup(html)
+    return soup
 
 
 def __create_download_links(soup, beginning_url, years, league):
@@ -59,28 +95,6 @@ def __create_download_links(soup, beginning_url, years, league):
             download_links.append(a["href"])
     download_links = [beginning_url + x for x in download_links]
     return download_links
-
-
-def __get_soup_file(url):
-    """
-    Gets the soup file.
-    Parameters
-    ----------
-    URL :string
-        The string to the main.
-    Output
-    ------
-    soup : BeautifulSoup
-        The soup file.
-    """
-    op = webdriver.ChromeOptions()
-    op.add_argument("headless")
-    driver = webdriver.Chrome(ChromeDriverManager().install(), options=op)
-    driver.get(url)
-    html = driver.page_source
-    driver.close()
-    soup = BeautifulSoup(html)
-    return soup
 
 
 def __download_csvs(download_links, league, years):
