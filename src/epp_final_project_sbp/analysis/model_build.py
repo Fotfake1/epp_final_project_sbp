@@ -27,16 +27,19 @@ def get_model(model, data, tscv):
 
     """
     if model == "KNN":
+        scaler = MinMaxScaler()
         k_range = list(range(1, MAX_NEIGHBORS_KNN))
         param_grid = {"n_neighbors": k_range}
-        model_trained = knn_model(data=data, grid=param_grid, split=tscv)
+        model_trained = knn_model(data=data, grid=param_grid, split=tscv, scaler=scaler)
 
     elif model == "RF":
+        scaler = MinMaxScaler()
         model_trained = cv_get_rf_model(
             max_depth_of_trees=MAX_DEPTH_OF_TREE,
             n_bootstrap_iterations=N_BOOTSTRAP_ITERATIONS,
             tscv=tscv,
             data=data,
+            scaler=scaler,
         )
     elif model == "LOGIT":
         clf = LogisticRegression(
@@ -85,11 +88,11 @@ def best_feature_selection_RFECV_logit(scaler, clf, min_feat, data_dum, cv_split
         scoring="f1_macro",
     )
 
-    model_rfecv.fit(X_train, Y_train)
+    model_rfecv = model_rfecv.fit(X_train, Y_train)
     return model_rfecv
 
 
-def cv_get_rf_model(max_depth_of_trees, n_bootstrap_iterations, tscv, data):
+def cv_get_rf_model(max_depth_of_trees, n_bootstrap_iterations, tscv, data, scaler):
     n_estimators = [
         int(x) for x in np.linspace(start=50, stop=n_bootstrap_iterations, num=10)
     ]
@@ -102,20 +105,17 @@ def cv_get_rf_model(max_depth_of_trees, n_bootstrap_iterations, tscv, data):
         "max_depth": depth_of_trees,
         "bootstrap": [True],
     }
-    X_train = data.drop(columns=["full_time_result"])
-    Y_train = data["full_time_result"]
-
-    rf_model_grid_search = random_forests_model(
+    rf_model = random_forests_model(
         split=tscv,
-        X_train=X_train,
-        Y_train=Y_train,
+        data=data,
         random_grid=grid,
+        scaler=scaler,
     )
-    # fine tune logistic regression
-    return rf_model_grid_search
+
+    return rf_model
 
 
-def random_forests_model(split, X_train, Y_train, random_grid):
+def random_forests_model(split, data, random_grid, scaler):
     """This function does a grid search for the random forest model.
 
     Input:
@@ -127,6 +127,9 @@ def random_forests_model(split, X_train, Y_train, random_grid):
         rf_model: trained rf model
 
     """
+    X_train = data.drop(columns=["full_time_result"])
+    X_train = scaler.fit_transform(X_train)
+    Y_train = data["full_time_result"]
     rf = RandomForestClassifier()
     rf_model = GridSearchCV(
         estimator=rf,
@@ -135,12 +138,15 @@ def random_forests_model(split, X_train, Y_train, random_grid):
         scoring="f1_macro",
         n_jobs=-2,
     )
-    rf_model.fit(X=X_train, y=Y_train)
+    rf_model = rf_model.fit(X_train, Y_train)
     return rf_model
 
 
-def knn_model(data, grid, split):
+def knn_model(data, grid, split, scaler):
+    X_train = pd.DataFrame()
+    Y_train = pd.DataFrame()
     X_train = data.drop(columns=["full_time_result"])
+    X_train = scaler.fit_transform(X_train)
     Y_train = data["full_time_result"]
     knn = KNeighborsClassifier()
     knn_model = GridSearchCV(
@@ -152,6 +158,6 @@ def knn_model(data, grid, split):
         n_jobs=-2,
     )
 
-    knn_model.fit(X_train, Y_train)
+    knn_model = knn_model.fit(X_train, Y_train)
 
     return knn_model
