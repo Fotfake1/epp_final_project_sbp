@@ -3,6 +3,32 @@ import pandas as pd
 from epp_final_project_sbp.config import NOT_KNOWN_ON_GAMEDAY, ODDS
 
 
+def data_preparation(
+    data,
+    league,
+    not_known_on_game_day=NOT_KNOWN_ON_GAMEDAY,
+    odds=ODDS,
+):
+    """prepares the data, to be used in the model
+    Input:
+        data: dataframe
+        not_known_on_game_day: list of columns, which are not known on game day
+        odds: list of columns, which are the odds.
+
+    """
+    data = data.drop(columns="index")
+    data = data.set_index("Date")
+    data = data.loc[data["league"] == league]
+    data = compute_consensus_odds(df=data, columns_with_odds=odds)
+    data = compute_percentages_out_of_consensus_odds(df=data)
+    data = data.drop(columns=not_known_on_game_day)
+    data = data.drop(columns=["league", "kick_off_time"], axis=1)
+    data = pd.get_dummies(data)
+    data = data.fillna(-33)
+    data = data_robustness_check(data=data)
+    return pd.DataFrame(data)
+
+
 def get_league(produces):
     """extracts the league out of the path
     Input:
@@ -94,34 +120,6 @@ def compute_percentages_out_of_consensus_odds(df):
         df["consensus_percentage_away"] / df["consensus_sum_of_percentages"]
     )
     return df
-
-
-def data_preparation(
-    data,
-    league,
-    not_known_on_game_day=NOT_KNOWN_ON_GAMEDAY,
-    odds=ODDS,
-):
-    """prepares the data, to be used in the model
-    Input:
-        data: dataframe
-        not_known_on_game_day: list of columns, which are not known on game day
-        odds: list of columns, which are the odds.
-
-    """
-    data = data.drop(columns="index")
-    data = data.set_index("Date")
-    data = data.loc[data["league"] == league]
-    data = compute_consensus_odds(df=data, columns_with_odds=odds)
-    data = compute_percentages_out_of_consensus_odds(df=data)
-    odds = data[list(odds)]
-    data = data.drop(columns=not_known_on_game_day)
-    data = data.drop(columns=["league", "kick_off_time"], axis=1)
-    data = data.drop(columns=odds, axis=1)
-    data = pd.get_dummies(data)
-    data = data.fillna(-33)
-    data = data_robustness_check(data=data)
-    return data, odds
 
 
 def split_data(data, train_share):

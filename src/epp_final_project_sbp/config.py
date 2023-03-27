@@ -72,6 +72,49 @@ ODDS = [
     "consensus_odds_away",
     "consensus_sum_of_percentages",
 ]
+
+
+SIMULATION_RELEVANT_COLUMNS = [
+    "B365H",
+    "B365D",
+    "B365A",
+    "BSH",
+    "BSD",
+    "BSA",
+    "BWH",
+    "BWD",
+    "BWA",
+    "GBH",
+    "GBD",
+    "GBA",
+    "IWH",
+    "IWD",
+    "IWA",
+    "LBH",
+    "LBD",
+    "LBA",
+    "PSH",
+    "PSD",
+    "PSA",
+    "SBH",
+    "SBD",
+    "SBA",
+    "SJH",
+    "SJD",
+    "SJA",
+    "VCH",
+    "VCD",
+    "VCA",
+    "WHH",
+    "WHD",
+    "WHA",
+    "consensus_odds_home",
+    "consensus_odds_draw",
+    "consensus_odds_away",
+    "model_forecast",
+    "full_time_result",
+]
+
 # general boundary parameter KNN model
 TRAIN_SHARE = 0.8
 # general boundary parameter Logit model
@@ -93,3 +136,19 @@ def path_to_input_data(name):
 
 def path_to_processed_data(name):
     return BLD / "data" / f"processed_{name}.pkl"
+
+
+def path_to_input_model(name):
+    return BLD / "data" / f"processed_{name}.pkl"
+
+
+def path_to_final_model(name):
+    return BLD / "python" / "models" / f"final_model_{name}.pkl"
+
+
+def path_to_performance_store(name):
+    return BLD / "python" / "models" / f"performance_store_{name}.pkl"
+
+
+def path_to_simulation_results(name):
+    return BLD / "python" / "data" / f"simulation_results_{name}.pkl"
