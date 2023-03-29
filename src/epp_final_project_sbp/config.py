@@ -9,9 +9,10 @@ TEST_DIR = SRC.joinpath("..", "..", "tests").resolve()
 PAPER_DIR = SRC.joinpath("..", "..", "paper").resolve()
 PROJECT_INFO = SRC / "data" / "project_specifics.yaml"
 
-
 project_info_store = read_yaml(path=PROJECT_INFO)
 
+
+INFORMATION_SCRAPING = project_info_store["INFORMATION_SCRAPING"]
 
 LEAGUES = project_info_store["LEAGUES"]
 MODELS = project_info_store["MODELS"]
@@ -62,8 +63,8 @@ def path_to_input_data(name):
     return SRC / "data" / f"{name}.csv"
 
 
-def path_to_processed_data(name):
-    return BLD / "data" / f"processed_{name}.pkl"
+def path_to_processed_models(name):
+    return BLD / "python" / "models" / f"processed_{name}.pkl"
 
 
 def path_to_input_model(name):

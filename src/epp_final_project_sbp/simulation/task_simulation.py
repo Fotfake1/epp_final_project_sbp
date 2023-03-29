@@ -46,7 +46,7 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
         model = pickle.load(open(depends_on["model"], "rb"))
 
-        simulation_results = sim.simulate_forecasting_parallel(
+        simulation_results = sim.simulate_forecasting(
             data=data,
             number_of_initial_training_dates=200,
             model=model,

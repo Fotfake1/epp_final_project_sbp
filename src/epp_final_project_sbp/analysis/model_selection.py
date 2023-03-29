@@ -148,6 +148,11 @@ def __consensus_forecast_bookmakers(row):
 def __compute_performance_metrics(test_data):
     """'This function computes the performance metrics of the models.
 
+    Each of the for loops computes a different performance metric.
+
+    The metrics are computed for each of the considered models and for the always chose home strategy,
+
+    as well as the consensus across betting companies strategy.
     Input:
         test_data: dataframe with the test data
     Output:

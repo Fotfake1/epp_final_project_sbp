@@ -1,58 +1,16 @@
-import epp_final_project_sbp.data_management.clean_data as cd
-import epp_final_project_sbp.web_scraping.web_scraper as ws
 import pandas as pd
 import pytask
-from epp_final_project_sbp.config import SRC
+
+import epp_final_project_sbp.data_management.clean_data as cd
+import epp_final_project_sbp.web_scraping.web_scraper as ws
+from epp_final_project_sbp.config import INFORMATION_SCRAPING, SRC
 
 
 @pytask.mark.produces(SRC / "data" / "data_raw.csv")
 def task_webscraping(produces):
     data = pd.DataFrame()
     data_sources = {}
-    information = {
-        "beginning_url": "https://www.football-data.co.uk/",
-        "years": [
-            "2223",
-            "2122",
-            "2021",
-            "1920",
-            "1819",
-            "1718",
-            "1617",
-            "1516",
-            "1415",
-            "1314",
-            "1213",
-            "1213",
-            "1112",
-        ],
-        "Leagues": {
-            "PL": {
-                "Foldername": "PL_data",
-                "Leaguetag": "PL",
-                "Leaguename": "E0",
-                "Leagueurl": "https://www.football-data.co.uk/englandm.php",
-            },
-            "BL": {
-                "Foldername": "BL_data",
-                "Leaguetag": "BL",
-                "Leaguename": "D1",
-                "Leagueurl": "https://www.football-data.co.uk/germanym.php",
-            },
-            "PD": {
-                "Foldername": "PD_data",
-                "Leaguetag": "PD",
-                "Leaguename": "SP1",
-                "Leagueurl": "https://www.football-data.co.uk/spainm.php",
-            },
-            "SA": {
-                "Foldername": "SA_data",
-                "Leaguetag": "SA",
-                "Leaguename": "I1",
-                "Leagueurl": "https://www.football-data.co.uk/italym.php",
-            },
-        },
-    }
+    information = INFORMATION_SCRAPING
 
     for league in information["Leagues"]:
         data_sources[league] = ws.download_data(

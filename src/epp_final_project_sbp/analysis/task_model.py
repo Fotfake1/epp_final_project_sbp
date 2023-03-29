@@ -15,7 +15,7 @@ from epp_final_project_sbp.config import (
     MODELS,
     N_SPLIT,
     TRAIN_SHARE,
-    path_to_processed_data,
+    path_to_processed_models,
 )
 
 
@@ -25,7 +25,7 @@ def _create_parametrization(datasource, leagues, models):
     for league in leagues:
         for model in models:
             name = f"{league}_{model}"
-            produces = path_to_processed_data(name)
+            produces = path_to_processed_models(name)
             id_to_kwargs[name] = {"depends_on": depends_on, "produces": produces}
 
     return id_to_kwargs

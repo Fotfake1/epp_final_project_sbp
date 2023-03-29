@@ -2,23 +2,32 @@ import pandas as pd
 
 
 def compute_outcomes_betting_strategies(simulation_data, odds):
+    """This function computes the outcomes of the different betting strategies.
+
+    Input:
+        simulation_data: dataframe with the data on which the betting strategies are simulated
+        odds: dictionary with the odds for the different outcomes
+    Output:
+        result_simulation: dataframe with the profits of the different betting strategies
+
+    """
     simulation_data["consensus_forecast_bookmakers"] = simulation_data.apply(
         consensus_forecast_bookmakers,
         axis=1,
     )
-    result_simulation = bet_on_outcome_plain(
+    result_simulation = __bet_on_outcome_plain(
         data=simulation_data,
         amount=1,
         forecast_column="model_forecast",
         odds=odds,
     )
-    result_simulation = bet_on_outcome_if_not_in_line_with_consensus(
+    result_simulation = __bet_on_outcome_if_not_in_line_with_consensus(
         data=result_simulation,
         amount=1,
         forecast_column="model_forecast",
         odds=odds,
     )
-    result_simulation = bet_on_outcome_if_in_line_with_consensus(
+    result_simulation = __bet_on_outcome_if_in_line_with_consensus(
         data=result_simulation,
         amount=1,
         forecast_column="model_forecast",
@@ -27,11 +36,18 @@ def compute_outcomes_betting_strategies(simulation_data, odds):
     return result_simulation
 
 
-def bet_on_outcome_plain(data, amount, forecast_column, odds):
+def __bet_on_outcome_plain(data, amount, forecast_column, odds):
     """This function simulates the behaviour of always betting on the outcome the model
     predicts.
 
     The amount of money you bet is always 1 dollar. The best odds are always chosesn.
+    Input:
+        data: dataframe with the data on which the betting strategies are simulated
+        amount: amount of money you bet
+        forecast_column: column with the forecast of the model
+        odds: dictionary with the odds for the different outcomes
+    Output:
+        data: dataframe with the profits of the different betting strategies
 
     """
     profit_string = "bet_on_outcome_plain_" + forecast_column
@@ -72,10 +88,17 @@ def bet_on_outcome_plain(data, amount, forecast_column, odds):
     return data
 
 
-def bet_on_outcome_if_in_line_with_consensus(data, amount, forecast_column, odds):
+def __bet_on_outcome_if_in_line_with_consensus(data, amount, forecast_column, odds):
     """This function simulates the behaviour of betting on the outcome the model.
 
     predicts, but only if the model is in line with the consensus.
+    Input:
+        data: dataframe with the data on which the betting strategies are simulated
+        amount: amount of money you bet
+        forecast_column: column with the forecast of the model
+        odds: dictionary with the odds for the different outcomes
+    Output:
+        data: dataframe with the profits of the different betting strategies
 
     """
     profit_string = "bet_on_outcome_if_in_line_with_consensus_profit_" + forecast_column
@@ -119,10 +142,17 @@ def bet_on_outcome_if_in_line_with_consensus(data, amount, forecast_column, odds
     return data
 
 
-def bet_on_outcome_if_not_in_line_with_consensus(data, amount, forecast_column, odds):
+def __bet_on_outcome_if_not_in_line_with_consensus(data, amount, forecast_column, odds):
     """This function simulates the behaviour of betting on the outcome the model.
 
     predicts, but only if the model is not in line with the consensus.
+    Input:
+        data: dataframe with the data on which the betting strategies are simulated
+        amount: amount of money you bet
+        forecast_column: column with the forecast of the model
+        odds: dictionary with the odds for the different outcomes
+    Output:
+        data: dataframe with the profits of the different betting strategies
 
     """
     profit_string = (
@@ -169,10 +199,16 @@ def bet_on_outcome_if_not_in_line_with_consensus(data, amount, forecast_column, 
     return data
 
 
-def find_best_odds(data, HDA_outcome, odds):
-    """This function finds the best odds for a given outcome.
+def __find_best_odds(data, HDA_outcome, odds):
+    """This function finds the best odds for a given outcome. The outcome can be either
+    "H", "D" or "A". Based on this, the best odds are searched for this outcome.
 
-    The outcome can be either "H", "D" or "A".
+    Input:
+        data: dataframe with the data on which the betting strategies are simulated
+        HDA_outcome: the outcome for which you want to find the best odds
+        odds: dictionary with the odds for the different outcomes
+    Output:
+        best_odds: the best odds for the given outcome.
 
     """
     odds_sim = [
@@ -189,7 +225,6 @@ def find_best_odds(data, HDA_outcome, odds):
     ]
 
     columns_with_odds = [col for col in odds_sim if col.endswith(HDA_outcome)]
-    # get the best odds
     best_odds = data[columns_with_odds].max(axis="columns", numeric_only=True).values[0]
     return best_odds
 
@@ -221,6 +256,12 @@ def consensus_forecast_bookmakers(row):
 
 
 def cumulative_sum(data, column):
-    """computes the rolling sum of a given column."""
+    """computes the rolling sum of a given column.
+
+    Input: data: pd.DataFrame
+              column: column name
+    Output: dataframe with a new column containing the cumulative sum of the given column
+
+    """
     data["cumulative_sum_" + column] = data[column].cumsum()
     return data
