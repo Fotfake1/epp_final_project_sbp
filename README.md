@@ -23,7 +23,8 @@ $ pytask
 ## Remarks
 
 ### Project structure: 
-The project is divided into the following mental parts, which can be seen seperately and which built on each other: Webscraping, data management, feature creation, model built, model selection and simulation. Each of the mental building blocks is located in a seperate folder, excluded the model built and model selection, which are placed together. The results can be generated through the pytask command, plots are placed in the generated .pdf filde
+The project is divided into the following mental parts, which can be thought of seperately and which are built on each other: Webscraping, data management, feature creation, model built, model selection and simulation. Each of the mental building blocks is located in a seperate folder, excluded the model built and model selection, which are placed together. The results can be generated through the pytask command, plots are placed in the generated .pdf file.
+
 
 ### Simulation: 
 The simulation is at the current state not parallelized, due to time constraints. Because of this issue, the runtime is high. All other parts run in a reasonable timeframe. 
