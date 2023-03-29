@@ -1,4 +1,3 @@
-import billiard as mp
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -25,22 +24,14 @@ def simulate_forecasting_parallel(data, number_of_initial_training_dates, model)
         The simulated forecasts of the given model.
 
     """
-    import warnings
-
     dates = pd.to_datetime(np.unique(np.array(data.index)))
     dates = dates[number_of_initial_training_dates:]
     simulated_data = pd.DataFrame()
     scaler = MinMaxScaler()
 
-    pool = mp.Pool(mp.cpu_count() - 1)
-    warnings.filterwarnings("ignore")
-    with mp.Pool(mp.cpu_count() - 1) as pool:
-        results = pool.map(
-            __simulate_date_parallel,
-            [(date, data, model, scaler) for date in dates],
-        )
-    pool.close()
-    for result in results:
+    for date in dates:
+        result = __simulate_date(date, data, model, scaler)
+
         if simulated_data.empty:
             simulated_data = result
         else:
@@ -49,7 +40,7 @@ def simulate_forecasting_parallel(data, number_of_initial_training_dates, model)
     return simulated_data
 
 
-def __simulate_date_parallel(args):
+def __simulate_date(date, data, model, scaler):
     """This is a helper function, which is used to simulate the forecasting process of a
     given model, given the dataset.
 
@@ -61,7 +52,6 @@ def __simulate_date_parallel(args):
         subset_test: pd.DataFrame - the simulated forecasts of the given model for the given date
 
     """
-    date, data, model, scaler = args
     subset_train = get_data_before_date(data, date)
     subset_test = get_data_on_date(data, date)
     X_train, y_train, X_test = __create_training_test_data(
