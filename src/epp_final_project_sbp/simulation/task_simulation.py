@@ -46,16 +46,17 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
         model = pickle.load(open(depends_on["model"], "rb"))
 
-        simulation_results = sim.simulate_forecasting(
+        simulation_results = sim.simulate_forecasting_parallel(
             data=data,
-            number_of_initial_training_dates=50,
+            number_of_initial_training_dates=200,
             model=model,
         )
         simulation_results = simulation_results[SIMULATION_RELEVANT_COLUMNS]
+
         simulation_results = bs.compute_outcomes_betting_strategies(
             simulation_data=simulation_results,
-            ODDS_sim=SIMULATION_RELEVANT_COLUMNS,
+            odds=SIMULATION_RELEVANT_COLUMNS,
         )
 
-        with open(produces["model"], "wb") as f:
+        with open(produces, "wb") as f:
             pickle.dump(simulation_results, f)

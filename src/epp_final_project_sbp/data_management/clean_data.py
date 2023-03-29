@@ -4,7 +4,62 @@ import numpy as np
 import pandas as pd
 
 
-def harmonize_columns(df1, df2):
+def manage_data(
+    data,
+    name_information,
+    considered_features,
+    categorical_features,
+    integer_features,
+):
+    """This function handles initial data cleaning, sorting the data and ensuring the
+    right data types.
+
+    Input:
+        data, pandas dataframe: raw data
+        name_information, pandas dataframe: naming information about the data
+        considered_features, list: list of features to be considered
+        categorical_featuers, list: list of categorical features
+        integer_features, list: list of integer features
+    Output:
+        data, pandas dataframe: cleaned and sorted data
+
+    """
+    assert isinstance(
+        data,
+        pd.DataFrame,
+    ), "The data variable must be a pandas dataframe."
+    assert isinstance(
+        name_information,
+        pd.DataFrame,
+    ), "The name_information must be a pandas dataframe."
+    assert isinstance(considered_features, list), "Considered_features must be a list."
+    assert isinstance(
+        categorical_features,
+        list,
+    ), "The categorical_features must be a list."
+    assert isinstance(integer_features, list), "The integer_features must be a list."
+
+    data = __convert_column_names_to_sensible_names(
+        name_information=name_information,
+        df=data,
+    )
+
+    data = data[considered_features]
+
+    data = __convert_to_categorical(df=data, columns=categorical_features)
+    data["Date"] = pd.to_datetime(
+        data["Date"],
+        format="%d/%m/%Y",
+        errors="coerce",
+    ).fillna(pd.to_datetime(data["Date"], format="%d/%m/%y", errors="coerce"))
+
+    data.sort_values(by=["Date"], inplace=True)
+    data = data.reset_index()
+    data = __convert_to_integer(df=data, columns=integer_features)
+    return data
+
+
+def __harmonize_columns(df1, df2):
     """This function takes the union of two dataframes and returns to dataframes with
     these columns.
 
@@ -28,7 +83,7 @@ def harmonize_columns(df1, df2):
     return df1, df2
 
 
-def rbind_dataframes(df1, df2):
+def __rbind_dataframes(df1, df2):
     """
     This function binds two dataframes by rows
     Input:
@@ -57,7 +112,7 @@ def rbind_list_of_dataframes(data_sources, data):
     """This function binds a list of dataframes by rows into one dataframe The for loop
     iterates over the list of dataframes and binds them to the dataframe data.
 
-    The if statement checks if the dataframe is already in the dataframe data.
+    The if statements check if the dataframes are the same one and if they have already been added.
     Input:
         data_source: dict of dataframes
     Output:
@@ -71,7 +126,7 @@ def rbind_list_of_dataframes(data_sources, data):
                 (
                     data_sources[dataset_one],
                     data_sources[dataset_two],
-                ) = harmonize_columns(
+                ) = __harmonize_columns(
                     df1=data_sources[dataset_one],
                     df2=data_sources[dataset_two],
                 )
@@ -83,17 +138,17 @@ def rbind_list_of_dataframes(data_sources, data):
                 data = data_sources[dataset_one]
                 added_leagues.append(dataset_one)
             else:
-                data = rbind_dataframes(data, data_sources[dataset_one])
+                data = __rbind_dataframes(data, data_sources[dataset_one])
                 added_leagues.append(dataset_one)
         if dataset_two in added_leagues:
             continue
         else:
-            data = rbind_dataframes(data, data_sources[dataset_two])
+            data = __rbind_dataframes(data, data_sources[dataset_two])
             added_leagues.append(dataset_two)
     return data
 
 
-def convert_to_categorical(df, columns):
+def __convert_to_categorical(df, columns):
     """
     This function converts the columns of a dataframe to categorical
     Input:
@@ -107,21 +162,7 @@ def convert_to_categorical(df, columns):
     return df
 
 
-def convert_to_numeric(df, columns):
-    """
-    This function converts the columns of a dataframe to numeric
-    Input:
-        df: dataframe
-        columns: list of columns to convert to numeric
-    Output:
-        df: dataframe with the columns converted to numeric.
-    """
-    for col in columns:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
-    return df
-
-
-def convert_to_integer(df, columns):
+def __convert_to_integer(df, columns):
     """
     This function converts the columns of a dataframe to integer
     Input:
@@ -135,7 +176,7 @@ def convert_to_integer(df, columns):
     return df
 
 
-def convert_column_names_to_sensible_names(name_information, df):
+def __convert_column_names_to_sensible_names(name_information, df):
     """
     This function replaces the column names of a dataframe with sensible names
     The current columnnames are present in the column "current_names", the sensible names are present in the column "sensible_names"
@@ -155,16 +196,4 @@ def convert_column_names_to_sensible_names(name_information, df):
                     ][i],
                 },
             )
-    return df
-
-
-def delete_rows_with_just_nans(df):
-    """
-    This function deletes the rows of a dataframe that only contain NaNs
-    Input:
-        df: dataframe
-    Output:
-        df: dataframe without the rows that only contain NaNs.
-    """
-    df = df.dropna(how="all")
     return df

@@ -1,6 +1,33 @@
 import numpy as np
 
 
+def compute_features_last_n_games(df, n):
+    """
+    This function computes the features for the last n games
+    Input:
+        df: dataframe
+        n: number of games
+    Output:
+        df: dataframe with the features added.
+    """
+    df = __compute_sum_of_points_last_n_games(df=df, number_of_matches=n)
+    df = __compute_mean_shots_on_target(df=df, number_of_matches=n)
+    df = __compute_mean_shots_on_target_opponents(df=df, number_of_matches=n)
+    df = __compute_mean_goals_shot_last_n_matches(df=df, number_of_matches=n)
+    df = __compute_mean_goals_against_team_last_n_matches(df=df, number_of_matches=n)
+    df = __compute_mean_goal_difference_last_n_matches(df=df, number_of_matches=n)
+    df = __compute_mean_corners_got_last_n_games(df=df, number_of_matches=n)
+    df["full_time_result"] = np.where(
+        df.full_time_result == "H",
+        2,
+        np.where((df.full_time_result == "A"), 1, 0),
+    )
+
+    df.fillna(np.nan, inplace=True)
+
+    return df
+
+
 def add_percentages_to_odds(df, columns):
     """
     This function adds the percentages to the odds
@@ -12,33 +39,6 @@ def add_percentages_to_odds(df, columns):
     """
     for col in columns:
         df[col + "_percentage"] = 1 / df[col]
-    return df
-
-
-def compute_features_last_n_games(df, n):
-    """
-    This function computes the features for the last n games
-    Input:
-        df: dataframe
-        n: number of games
-    Output:
-        df: dataframe with the features added.
-    """
-    df = compute_sum_of_points_last_n_games(df=df, number_of_matches=n)
-    df = compute_mean_shots_on_target(df=df, number_of_matches=n)
-    df = compute_mean_shots_on_target_opponents(df=df, number_of_matches=n)
-    df = compute_mean_goals_shot_last_n_matches(df=df, number_of_matches=n)
-    df = compute_mean_goals_against_team_last_n_matches(df=df, number_of_matches=n)
-    df = compute_mean_goal_difference_last_n_matches(df=df, number_of_matches=n)
-    df = compute_mean_corners_got_last_n_games(df=df, number_of_matches=n)
-    df["full_time_result"] = np.where(
-        df.full_time_result == "H",
-        2,
-        np.where((df.full_time_result == "A"), 1, 0),
-    )
-
-    df.fillna(np.nan, inplace=True)
-
     return df
 
 
@@ -125,7 +125,7 @@ def __extract_list_of_points(matches, team):
     return matches_points
 
 
-def compute_sum_of_points_last_n_games(df, number_of_matches):
+def __compute_sum_of_points_last_n_games(df, number_of_matches):
     """
     This function adds the sum of points in the last n games without the current game
     Input:
@@ -191,7 +191,7 @@ def __extract_list_of_shots_on_target(matches, team):
     return list_of_shots_on_target
 
 
-def compute_mean_shots_on_target(df, number_of_matches):
+def __compute_mean_shots_on_target(df, number_of_matches):
     """
     This function computes the mean shots on target in the last n matches
     Input:
@@ -259,7 +259,7 @@ def __extract_list_of_shots_on_target_opponents(matches, team):
     return list_of_shots_on_target_opponents
 
 
-def compute_mean_shots_on_target_opponents(df, number_of_matches):
+def __compute_mean_shots_on_target_opponents(df, number_of_matches):
     """
     This function computes the mean shots on target of the opponents in the last n matches
     Input:
@@ -327,7 +327,7 @@ def __extract_list_of_goals(matches, team):
     return list_of_goals
 
 
-def compute_mean_goals_shot_last_n_matches(df, number_of_matches):
+def __compute_mean_goals_shot_last_n_matches(df, number_of_matches):
     """
     This function computes the mean goals shot in the last n matches
     Input:
@@ -385,7 +385,7 @@ def __extract_list_of_goals_against(matches, team):
     return list_of_goals
 
 
-def compute_mean_goals_against_team_last_n_matches(df, number_of_matches):
+def __compute_mean_goals_against_team_last_n_matches(df, number_of_matches):
     """
     This function computes the mean goals against in the last n matches
     Input:
@@ -453,7 +453,7 @@ def __extract_the_goal_difference_list(matches, team):
     return matches_goal_difference
 
 
-def compute_mean_goal_difference_last_n_matches(df, number_of_matches):
+def __compute_mean_goal_difference_last_n_matches(df, number_of_matches):
     """
     This function computes the mean goal difference in the last n matches
     Input:
@@ -515,7 +515,7 @@ def __extract_the_list_of_corners(matches, team):
     return matches_corners
 
 
-def compute_mean_corners_got_last_n_games(df, number_of_matches):
+def __compute_mean_corners_got_last_n_games(df, number_of_matches):
     """
     This function computes the mean corners got in the last n games
     Input:

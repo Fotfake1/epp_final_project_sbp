@@ -30,11 +30,16 @@ def get_model(model, data, tscv):
         scaler = MinMaxScaler()
         k_range = list(range(1, MAX_NEIGHBORS_KNN))
         param_grid = {"n_neighbors": k_range}
-        model_trained = knn_model(data=data, grid=param_grid, split=tscv, scaler=scaler)
+        model_trained = __knn_model(
+            data=data,
+            grid=param_grid,
+            split=tscv,
+            scaler=scaler,
+        )
 
     elif model == "RF":
         scaler = MinMaxScaler()
-        model_trained = cv_get_rf_model(
+        model_trained = __cv_get_rf_model(
             max_depth_of_trees=MAX_DEPTH_OF_TREE,
             n_bootstrap_iterations=N_BOOTSTRAP_ITERATIONS,
             tscv=tscv,
@@ -49,7 +54,7 @@ def get_model(model, data, tscv):
             fit_intercept=True,
         )
         scaler = MinMaxScaler()
-        model_trained = best_feature_selection_RFECV_logit(
+        model_trained = __best_feature_selection_RFECV_logit(
             scaler=scaler,
             clf=clf,
             min_feat=MIN_FEAT_LOG_REG,
@@ -61,17 +66,18 @@ def get_model(model, data, tscv):
     return model_trained
 
 
-def best_feature_selection_RFECV_logit(scaler, clf, min_feat, data_dum, cv_split):
+def __best_feature_selection_RFECV_logit(scaler, clf, min_feat, data_dum, cv_split):
     """computes the best feature selection for Logistic Regression
     this function does "
     Input:
-        scaler: MinMaxScaler
-        clf: LogisticRegression
-        i: number of features
+        scaler: MinMaxScaler to scale the data
+        clf: LogisticRegression model
+        min_feat: int the minimum number of features to be selected
         data_dum: dataframe
-        Output:
-        X_train: X_train
+        X_train: X_train - training data
         Y_train: Y_train.
+    Output:
+        model_rfecv: model_rfecv.
     """
     X_train = pd.DataFrame()
     Y_train = pd.DataFrame()
@@ -92,7 +98,20 @@ def best_feature_selection_RFECV_logit(scaler, clf, min_feat, data_dum, cv_split
     return model_rfecv
 
 
-def cv_get_rf_model(max_depth_of_trees, n_bootstrap_iterations, tscv, data, scaler):
+def __cv_get_rf_model(max_depth_of_trees, n_bootstrap_iterations, tscv, data, scaler):
+    """This function calls a grid search function for the random forest model.
+
+    It serves as a preparation function for the actual grid search.
+    Input:
+        max_depth_of_trees: int
+        n_bootstrap_iterations: int
+        tscv: cross validation split
+        data: dataframe with the non-splitted data
+        scaler: MinMaxScaler
+    Output:
+        rf_model: trained rf model
+
+    """
     n_estimators = [
         int(x) for x in np.linspace(start=50, stop=n_bootstrap_iterations, num=10)
     ]
@@ -105,7 +124,7 @@ def cv_get_rf_model(max_depth_of_trees, n_bootstrap_iterations, tscv, data, scal
         "max_depth": depth_of_trees,
         "bootstrap": [True],
     }
-    rf_model = random_forests_model(
+    rf_model = __random_forests_model(
         split=tscv,
         data=data,
         random_grid=grid,
@@ -115,14 +134,13 @@ def cv_get_rf_model(max_depth_of_trees, n_bootstrap_iterations, tscv, data, scal
     return rf_model
 
 
-def random_forests_model(split, data, random_grid, scaler):
+def __random_forests_model(split, data, random_grid, scaler):
     """This function does a grid search for the random forest model.
 
     Input:
         split: cross validation split
-        X_train: training data, unscaled
-        Y_train: Outcome variable
-        random_grid: random grid,
+        data: dataframe with the non-splitted data
+        random_grid: random grid with hyperparameters to optimize over,
     Output:
         rf_model: trained rf model
 
@@ -142,7 +160,17 @@ def random_forests_model(split, data, random_grid, scaler):
     return rf_model
 
 
-def knn_model(data, grid, split, scaler):
+def __knn_model(data, grid, split, scaler):
+    """This function does a grid search for the KNN model.
+
+    Input:
+        data: dataframe with the non-splitted data
+        grid: grid with hyperparameters to optimize over,
+        split: cross validation split
+    Output:
+        knn_model: trained knn model
+
+    """
     X_train = pd.DataFrame()
     Y_train = pd.DataFrame()
     X_train = data.drop(columns=["full_time_result"])

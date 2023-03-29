@@ -11,12 +11,12 @@ from epp_final_project_sbp.config import (
 def model_selection(data, rf_model_cv, knn_model, logit_model):
     """This function calls the intermediate steps to select the best model out of the.
 
-    three and computes some performance metrics.
+    three and to compute some performance metrics.
     Input:
         data: dataframe
         rf_model_cv: random forest model
         knn_model: knn model
-        logit_model: logistic regression model
+        logit_model: logistic regression modsel
         Output:
         model: best model
         performances: dataframe with performance metrics
@@ -26,10 +26,10 @@ def model_selection(data, rf_model_cv, knn_model, logit_model):
         data,
         train_share=TRAIN_SHARE,
     )
-    y_pred_rf, y_pred_prob_rf = rf_predict(rf_model_cv, X_test)
-    y_pred_knn, y_pred_prob_knn = knn_predict(knn_model, X_test)
-    y_pred_logit, y_pred_prob_logit = logit_predict(logit_model, X_test)
-    test_data = combine_test_and_predict(
+    y_pred_rf, y_pred_prob_rf = __rf_predict(rf_model_cv, X_test)
+    y_pred_knn, y_pred_prob_knn = __knn_predict(knn_model, X_test)
+    y_pred_logit, y_pred_prob_logit = __logit_predict(logit_model, X_test)
+    test_data = __combine_test_and_predict(
         test_data,
         y_pred_logit,
         y_pred_rf,
@@ -37,8 +37,8 @@ def model_selection(data, rf_model_cv, knn_model, logit_model):
         y_pred_prob_logit,
         y_pred_prob_rf,
     )
-    performances = compute_performance_metrics(test_data)
-    model = decide_function_model(
+    performances = __compute_performance_metrics(test_data)
+    model = __decide_function_model(
         result_df=performances,
         model_logit=logit_model,
         model_rf=rf_model_cv.best_estimator_,
@@ -68,7 +68,7 @@ def data_splitter(data, train_share):
     return X_train, y_train, X_test, y_test, test_data, train_data
 
 
-def rf_predict(rf_model_cv, X_test):
+def __rf_predict(rf_model_cv, X_test):
     """This function predicts the outcome of a match using a random forest model
     Input:
         rf_model: random forest model
@@ -84,7 +84,7 @@ def rf_predict(rf_model_cv, X_test):
     return y_pred, y_pred_prob
 
 
-def logit_predict(logit_model, X_test):
+def __logit_predict(logit_model, X_test):
     """This function predicts the outcome of a match using a logistic regression model
     Input:
         logit_model: logistic regression model
@@ -99,7 +99,7 @@ def logit_predict(logit_model, X_test):
     return y_pred, y_pred_prob
 
 
-def knn_predict(knn_model_cv, X_test):
+def __knn_predict(knn_model_cv, X_test):
     """This function predicts the outcome of a match using a knn model
     Input:
         knn_model: knn model
@@ -115,7 +115,7 @@ def knn_predict(knn_model_cv, X_test):
     return y_pred, y_pred_prob
 
 
-def combine_test_and_predict(
+def __combine_test_and_predict(
     test_data,
     y_pred_logit,
     y_pred_rf,
@@ -145,8 +145,15 @@ def __consensus_forecast_bookmakers(row):
         return 1
 
 
-def compute_performance_metrics(test_data):
-    """'This function computes the performance metrics of the models."""
+def __compute_performance_metrics(test_data):
+    """'This function computes the performance metrics of the models.
+
+    Input:
+        test_data: dataframe with the test data
+    Output:
+        result_df: dataframe with the performance metrics
+
+    """
     columns_result_df = [
         "accuracy_overall",
         "accuracy_home",
@@ -156,6 +163,16 @@ def compute_performance_metrics(test_data):
         "accuracy_not_in_odds",
     ]
     index_result_df = ["logit", "rf", "knn", "always_home", "consensus_odds"]
+    name_model_forecasts = [
+        "logit_pred",
+        "rf_pred",
+        "knn_pred",
+        "always_home",
+        "consensus_odds_forecast",
+    ]
+    naming_columns_dict = {
+        index_result_df[i]: name_model_forecasts[i] for i in range(len(index_result_df))
+    }
     result_df = pd.DataFrame(index=index_result_df, columns=columns_result_df)
 
     test_data["always_home"] = 2
@@ -164,218 +181,86 @@ def compute_performance_metrics(test_data):
         axis=1,
     )
 
-    # overall accuracy
-    result_df.loc["logit", "accuracy_overall"] = accuracy_score(
-        y_true=test_data["full_time_result"],
-        y_pred=test_data["logit_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["rf", "accuracy_overall"] = accuracy_score(
-        y_true=test_data["full_time_result"],
-        y_pred=test_data["rf_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["knn", "accuracy_overall"] = accuracy_score(
-        y_true=test_data["full_time_result"],
-        y_pred=test_data["knn_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["always_home", "accuracy_overall"] = accuracy_score(
-        y_true=test_data["full_time_result"],
-        y_pred=test_data["always_home"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["consensus_odds", "accuracy_overall"] = accuracy_score(
-        y_true=test_data["full_time_result"],
-        y_pred=test_data["consensus_odds_forecast"],
-        normalize=True,
-        sample_weight=None,
-    )
-    # accuracy home
-    result_df.loc["logit", "accuracy_home"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 2]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 2]["logit_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["rf", "accuracy_home"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 2]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 2]["rf_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["knn", "accuracy_home"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 2]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 2]["knn_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["always_home", "accuracy_home"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 2]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 2]["always_home"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["consensus_odds", "accuracy_home"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 2]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 2]["consensus_odds_forecast"],
-        normalize=True,
-        sample_weight=None,
-    )
-    # accuracy draw
-    result_df.loc["logit", "accuracy_draw"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 0]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 0]["logit_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["rf", "accuracy_draw"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 0]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 0]["rf_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["knn", "accuracy_draw"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 0]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 0]["knn_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["always_home", "accuracy_draw"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 0]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 0]["always_home"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["consensus_odds", "accuracy_draw"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 0]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 0]["consensus_odds_forecast"],
-        normalize=True,
-        sample_weight=None,
-    )
-    # accuracy away
-    result_df.loc["logit", "accuracy_away"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 1]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 1]["logit_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["rf", "accuracy_away"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 1]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 1]["rf_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["knn", "accuracy_away"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 1]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 1]["knn_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["always_home", "accuracy_away"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 1]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 1]["always_home"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["consensus_odds", "accuracy_away"] = accuracy_score(
-        y_true=test_data[test_data["full_time_result"] == 1]["full_time_result"],
-        y_pred=test_data[test_data["full_time_result"] == 1]["consensus_odds_forecast"],
-        normalize=True,
-        sample_weight=None,
-    )
-    # accuracy, if in line with odds
-    result_df.loc["logit", "accuracy_in_odds"] = accuracy_score(
-        y_true=test_data[
-            test_data["logit_pred"] == test_data["consensus_odds_forecast"]
-        ]["full_time_result"],
-        y_pred=test_data[
-            test_data["logit_pred"] == test_data["consensus_odds_forecast"]
-        ]["logit_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["rf", "accuracy_in_odds"] = accuracy_score(
-        y_true=test_data[test_data["rf_pred"] == test_data["consensus_odds_forecast"]][
-            "full_time_result"
-        ],
-        y_pred=test_data[test_data["rf_pred"] == test_data["consensus_odds_forecast"]][
-            "rf_pred"
-        ],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["knn", "accuracy_in_odds"] = accuracy_score(
-        y_true=test_data[test_data["knn_pred"] == test_data["consensus_odds_forecast"]][
-            "full_time_result"
-        ],
-        y_pred=test_data[test_data["knn_pred"] == test_data["consensus_odds_forecast"]][
-            "knn_pred"
-        ],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["always_home", "accuracy_in_odds"] = accuracy_score(
-        y_true=test_data[
-            test_data["always_home"] == test_data["consensus_odds_forecast"]
-        ]["full_time_result"],
-        y_pred=test_data[
-            test_data["always_home"] == test_data["consensus_odds_forecast"]
-        ]["always_home"],
-        normalize=True,
-        sample_weight=None,
-    )
-    # accuracy, if not in line with odds
-    result_df.loc["logit", "accuracy_not_in_odds"] = accuracy_score(
-        y_true=test_data[
-            test_data["logit_pred"] != test_data["consensus_odds_forecast"]
-        ]["full_time_result"],
-        y_pred=test_data[
-            test_data["logit_pred"] != test_data["consensus_odds_forecast"]
-        ]["logit_pred"],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["rf", "accuracy_not_in_odds"] = accuracy_score(
-        y_true=test_data[test_data["rf_pred"] != test_data["consensus_odds_forecast"]][
-            "full_time_result"
-        ],
-        y_pred=test_data[test_data["rf_pred"] != test_data["consensus_odds_forecast"]][
-            "rf_pred"
-        ],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["knn", "accuracy_not_in_odds"] = accuracy_score(
-        y_true=test_data[test_data["knn_pred"] != test_data["consensus_odds_forecast"]][
-            "full_time_result"
-        ],
-        y_pred=test_data[test_data["knn_pred"] != test_data["consensus_odds_forecast"]][
-            "knn_pred"
-        ],
-        normalize=True,
-        sample_weight=None,
-    )
-    result_df.loc["always_home", "accuracy_not_in_odds"] = accuracy_score(
-        y_true=test_data[
-            test_data["always_home"] != test_data["consensus_odds_forecast"]
-        ]["full_time_result"],
-        y_pred=test_data[
-            test_data["always_home"] != test_data["consensus_odds_forecast"]
-        ]["always_home"],
-        normalize=True,
-        sample_weight=None,
-    )
+    for name in naming_columns_dict:
+        result_df.loc[name, "accuracy_overall"] = accuracy_score(
+            y_true=test_data["full_time_result"],
+            y_pred=test_data[naming_columns_dict[name]],
+            normalize=True,
+            sample_weight=None,
+        )
 
+    for name in naming_columns_dict:
+        result_df.loc[name, "accuracy_home"] = accuracy_score(
+            y_true=test_data[test_data["full_time_result"] == 2]["full_time_result"],
+            y_pred=test_data[test_data["full_time_result"] == 2][
+                naming_columns_dict[name]
+            ],
+            normalize=True,
+            sample_weight=None,
+        )
+    for name in naming_columns_dict:
+        result_df.loc[name, "accuracy_draw"] = accuracy_score(
+            y_true=test_data[test_data["full_time_result"] == 0]["full_time_result"],
+            y_pred=test_data[test_data["full_time_result"] == 0][
+                naming_columns_dict[name]
+            ],
+            normalize=True,
+            sample_weight=None,
+        )
+    for name in naming_columns_dict:
+        result_df.loc[name, "accuracy_away"] = accuracy_score(
+            y_true=test_data[test_data["full_time_result"] == 1]["full_time_result"],
+            y_pred=test_data[test_data["full_time_result"] == 1][
+                naming_columns_dict[name]
+            ],
+            normalize=True,
+            sample_weight=None,
+        )
+
+    for name in naming_columns_dict:
+        result_df.loc[name, "accuracy_in_odds"] = accuracy_score(
+            y_true=test_data[
+                test_data[naming_columns_dict[name]]
+                == test_data["consensus_odds_forecast"]
+            ]["full_time_result"],
+            y_pred=test_data[
+                test_data[naming_columns_dict[name]]
+                == test_data["consensus_odds_forecast"]
+            ][naming_columns_dict[name]],
+            normalize=True,
+            sample_weight=None,
+        )
+
+    for name in naming_columns_dict:
+        result_df.loc[name, "accuracy_not_in_odds"] = accuracy_score(
+            y_true=test_data[
+                test_data[naming_columns_dict[name]]
+                != test_data["consensus_odds_forecast"]
+            ]["full_time_result"],
+            y_pred=test_data[
+                test_data[naming_columns_dict[name]]
+                != test_data["consensus_odds_forecast"]
+            ][naming_columns_dict[name]],
+            normalize=True,
+            sample_weight=None,
+        )
     return result_df
 
 
-def decide_function_model(result_df, model_logit, model_rf, model_knn):
-    """Function to decide which model to use for the simulation."""
+def __decide_function_model(result_df, model_logit, model_rf, model_knn):
+    """Function to decide which model to use for the simulation.
+
+    The decision is based on the accuracy of the models.
+    If two models have the same accuracy, the less compationally intensive model is chosen.
+    Input:
+        result_df: dataframe with the performance metrics
+        model_logit: logistic regression model
+        model_rf: random forest model
+        model_knn: k-nearest neighbors model
+    Output:
+        model: model to use for the simulation
+
+    """
     acc_rf = result_df.loc["rf", "accuracy_overall"]
     acc_logit = result_df.loc["logit", "accuracy_overall"]
     acc_knn = result_df.loc["knn", "accuracy_overall"]
@@ -389,6 +274,13 @@ def decide_function_model(result_df, model_logit, model_rf, model_knn):
     elif acc_knn > acc_rf and acc_knn > acc_logit:
         model = model_knn
 
-    else:
+    elif acc_rf == acc_logit:
+        model = model_logit
+
+    elif acc_rf == acc_knn:
         model = model_rf
+
+    elif acc_logit == acc_knn:
+        model = model_logit
+
     return model

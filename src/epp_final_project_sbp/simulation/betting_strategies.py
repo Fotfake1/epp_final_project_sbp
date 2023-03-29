@@ -1,8 +1,7 @@
 import pandas as pd
 
 
-def compute_outcomes_betting_strategies(simulation_data, ODDS_sim):
-    ODDS_sim.remove("model_forecast")
+def compute_outcomes_betting_strategies(simulation_data, odds):
     simulation_data["consensus_forecast_bookmakers"] = simulation_data.apply(
         consensus_forecast_bookmakers,
         axis=1,
@@ -11,19 +10,19 @@ def compute_outcomes_betting_strategies(simulation_data, ODDS_sim):
         data=simulation_data,
         amount=1,
         forecast_column="model_forecast",
-        odds=ODDS_sim,
+        odds=odds,
     )
     result_simulation = bet_on_outcome_if_not_in_line_with_consensus(
         data=result_simulation,
         amount=1,
         forecast_column="model_forecast",
-        odds=ODDS_sim,
+        odds=odds,
     )
     result_simulation = bet_on_outcome_if_in_line_with_consensus(
         data=result_simulation,
         amount=1,
         forecast_column="model_forecast",
-        odds=ODDS_sim,
+        odds=odds,
     )
     return result_simulation
 
@@ -35,7 +34,7 @@ def bet_on_outcome_plain(data, amount, forecast_column, odds):
     The amount of money you bet is always 1 dollar. The best odds are always chosesn.
 
     """
-    profit_string = "profit_" + forecast_column
+    profit_string = "bet_on_outcome_plain_" + forecast_column
     data[profit_string] = 0
     for i in range(len(data)):
         if data.iloc[i, data.columns.get_loc(forecast_column)] == 2:
@@ -79,7 +78,7 @@ def bet_on_outcome_if_in_line_with_consensus(data, amount, forecast_column, odds
     predicts, but only if the model is in line with the consensus.
 
     """
-    profit_string = "profit_bet_with_consensus_" + forecast_column
+    profit_string = "bet_on_outcome_if_in_line_with_consensus_profit_" + forecast_column
     data[profit_string] = 0
     for i in range(len(data)):
         if data["consensus_forecast_bookmakers"][i] == data[forecast_column][i]:
@@ -126,7 +125,9 @@ def bet_on_outcome_if_not_in_line_with_consensus(data, amount, forecast_column, 
     predicts, but only if the model is not in line with the consensus.
 
     """
-    profit_string = "profit_bet_againgst_consensus_" + forecast_column
+    profit_string = (
+        "bet_on_outcome_if_not_in_line_with_consensus_profit_" + forecast_column
+    )
     data[profit_string] = 0
 
     for i in range(len(data)):
@@ -194,6 +195,17 @@ def find_best_odds(data, HDA_outcome, odds):
 
 
 def consensus_forecast_bookmakers(row):
+    """This function computes the consensus forecast of the bookmakers for a given.
+
+    row in the dataframe.
+    Input:
+        row: a row in the dataframe
+    Output:
+        0: draw
+        1: away win
+        2: home win
+
+    """
     if (
         row["consensus_odds_home"] < row["consensus_odds_draw"]
         and row["consensus_odds_home"] < row["consensus_odds_away"]
@@ -206,3 +218,9 @@ def consensus_forecast_bookmakers(row):
         return 0
     else:
         return 1
+
+
+def cumulative_sum(data, column):
+    """computes the rolling sum of a given column."""
+    data["cumulative_sum_" + column] = data[column].cumsum()
+    return data

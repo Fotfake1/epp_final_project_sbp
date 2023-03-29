@@ -1,133 +1,61 @@
 """This module contains the general configuration of the project."""
 from pathlib import Path
 
+from epp_final_project_sbp.utilities import read_yaml
+
 SRC = Path(__file__).parent.resolve()
 BLD = SRC.joinpath("..", "..", "bld").resolve()
-
 TEST_DIR = SRC.joinpath("..", "..", "tests").resolve()
 PAPER_DIR = SRC.joinpath("..", "..", "paper").resolve()
+PROJECT_INFO = SRC / "data" / "project_specifics.yaml"
 
 
-LEAGUES = ["E0", "SP1", "D1", "I1"]
-MODELS = ["RF_model", "LOGIT_model", "KNN_model"]
+project_info_store = read_yaml(path=PROJECT_INFO)
 
-NOT_KNOWN_ON_GAMEDAY = [
-    "full_time_goals_hometeam",
-    "full_time_goals_awayteam",
-    "half_time_goals_hometeam",
-    "half_time_goals_awayteam",
-    "half_time_result",
-    "hometeam_shots",
-    "awayteam_shots",
-    "hometeam_shots_on_target",
-    "awayteam_shots_on_target",
-    "hometeam_corners",
-    "awayteam_corners",
-    "hometeam_fouls_done",
-    "awayteam_fouls_done",
-    "hometeam_yellow_cards",
-    "awayteam_yellow_cards",
-    "hometeam_red_cards",
-    "awayteam_red_cards",
-    "HomeTeam_points",
-    "AwayTeam_points",
-]
 
-ODDS = [
-    "B365H",
-    "B365D",
-    "B365A",
-    "BSH",
-    "BSD",
-    "BSA",
-    "BWH",
-    "BWD",
-    "BWA",
-    "GBH",
-    "GBD",
-    "GBA",
-    "IWH",
-    "IWD",
-    "IWA",
-    "LBH",
-    "LBD",
-    "LBA",
-    "PSH",
-    "PSD",
-    "PSA",
-    "SBH",
-    "SBD",
-    "SBA",
-    "SJH",
-    "SJD",
-    "SJA",
-    "VCH",
-    "VCD",
-    "VCA",
-    "WHH",
-    "WHD",
-    "WHA",
-    "consensus_odds_home",
-    "consensus_odds_draw",
-    "consensus_odds_away",
-    "consensus_sum_of_percentages",
-]
+LEAGUES = project_info_store["LEAGUES"]
+MODELS = project_info_store["MODELS"]
+
+BETTING_STRATEGIES = project_info_store["BETTING_STRATEGIES"]
+
+FEATURES_CREATED = project_info_store["FEATURES_CREATED"]
+
+NOT_KNOWN_ON_GAMEDAY = project_info_store["NOT_KNOWN_ON_GAMEDAY"]
+
+ODD_FEATURES = project_info_store["ODD_FEATURES"]
 
 
 SIMULATION_RELEVANT_COLUMNS = [
-    "B365H",
-    "B365D",
-    "B365A",
-    "BSH",
-    "BSD",
-    "BSA",
-    "BWH",
-    "BWD",
-    "BWA",
-    "GBH",
-    "GBD",
-    "GBA",
-    "IWH",
-    "IWD",
-    "IWA",
-    "LBH",
-    "LBD",
-    "LBA",
-    "PSH",
-    "PSD",
-    "PSA",
-    "SBH",
-    "SBD",
-    "SBA",
-    "SJH",
-    "SJD",
-    "SJA",
-    "VCH",
-    "VCD",
-    "VCA",
-    "WHH",
-    "WHD",
-    "WHA",
+    *ODD_FEATURES,
     "consensus_odds_home",
     "consensus_odds_draw",
     "consensus_odds_away",
-    "model_forecast",
     "full_time_result",
+    "model_forecast",
 ]
 
-# general boundary parameter KNN model
-TRAIN_SHARE = 0.8
-# general boundary parameter Logit model
-MIN_FEAT_LOG_REG = 4
 
-# genereal boundary parameter RF model
-MAX_DEPTH_OF_TREE = 100
-N_BOOTSTRAP_ITERATIONS = 1000
-N_SPLIT = 5
-MAX_NEIGHBORS_KNN = 30
+CONSIDERED_FEATURES = project_info_store["CONSIDERED_FEATURES"]
 
 
-__all__ = ["BLD", "SRC", "TEST_DIR", "GROUPS"]
+CATEGORICAL_FEATURES = project_info_store["CATEGORICAL_FEATURES"]
+INTEGER_FEATURES = project_info_store["INTEGER_FEATURES"]
+
+
+LABELS = project_info_store["LABELS"]
+
+CORR_PLOT_VARIABLES = project_info_store["CORR_PLOT_VARIABLES"]
+
+TRAIN_SHARE = project_info_store["TRAIN_SHARE"]
+MIN_FEAT_LOG_REG = project_info_store["MIN_FEAT_LOG_REG"]
+
+MAX_DEPTH_OF_TREE = project_info_store["MAX_DEPTH_OF_TREE_RF"]
+N_BOOTSTRAP_ITERATIONS = project_info_store["N_BOOTSTRAP_ITERATIONS_RF"]
+N_SPLIT = project_info_store["N_SPLIT_CV"]
+MAX_NEIGHBORS_KNN = project_info_store["MAX_NEIGHBORS_KNN"]
+
+
+__all__ = ["BLD", "SRC", "TEST_DIR"]
 
 
 def path_to_input_data(name):
@@ -152,3 +80,11 @@ def path_to_performance_store(name):
 
 def path_to_simulation_results(name):
     return BLD / "python" / "data" / f"simulation_results_{name}.pkl"
+
+
+def path_to_plots(name):
+    return BLD / "python" / "figures" / f"{name}.png"
+
+
+def path_to_tables(name):
+    pass

@@ -1,56 +1,52 @@
 """Functions plotting results."""
 
-import plotly.express as px
-import plotly.graph_objects as go
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+from epp_final_project_sbp.config import CORR_PLOT_VARIABLES, LABELS
+from epp_final_project_sbp.simulation import betting_strategies as bs
 
 
-def plot_regression_by_age(data, data_info, predictions, group):
-    """Plot regression results by age.
+def plot_correlation_matrix(data, labels=LABELS, corr_variables=CORR_PLOT_VARIABLES):
+    data_corr = data[corr_variables]
 
-    Args:
-        data (pandas.DataFrame): The data set.
-        data_info (dict): Information on data set stored in data_info.yaml. The
-            following keys can be accessed:
-            - 'outcome': Name of dependent variable column in data
-            - 'outcome_numerical': Name to be given to the numerical version of outcome
-            - 'columns_to_drop': Names of columns that are dropped in data cleaning step
-            - 'categorical_columns': Names of columns that are converted to categorical
-            - 'column_rename_mapping': Old and new names of columns to be renamend,
-                stored in a dictionary with design: {'old_name': 'new_name'}
-            - 'url': URL to data set
-        predictions (pandas.DataFrame): Model predictions for different age values.
-        group (str): Categorical column in data set. We create predictions for each
-            unique value in column data[group]. Cannot be 'age' or 'smoke'.
+    for label in corr_variables:
+        data_corr = data_corr[data_corr[label] != -33]
 
-    Returns:
-        plotly.graph_objects.Figure: The figure.
-
-    """
-    plot_data = predictions.melt(
-        id_vars="age",
-        value_vars=predictions.columns,
-        value_name="prediction",
-        var_name=group,
+    cmap = sns.diverging_palette(220, 20, as_cmap=True)
+    mask = np.triu(np.ones_like(data_corr.corr(), dtype=bool))
+    fig, ax = plt.subplots()
+    sns.heatmap(
+        data_corr.corr(),
+        cmap=cmap,
+        center=0,
+        mask=mask,
+        xticklabels=labels,
+        yticklabels=labels,
+        ax=ax,
     )
+    return fig
 
-    outcomes = data[data_info["outcome_numerical"]]
 
-    fig = px.line(
-        plot_data,
-        x="age",
-        y="prediction",
-        color=group,
-        labels={"age": "Age", "prediction": "Probability of Smoking"},
+def plot_boxplots(data, feature):
+    fig, ax = plt.subplots()
+    sns.boxplot(
+        x=data[data[feature] != -33]["full_time_result"],
+        y=data[data[feature] != -33][feature],
+        data=data,
+        ax=ax,
     )
+    ax.set_xlabel("Full Time Results", fontsize=10)
+    ax.set_ylabel(feature, fontsize=10)
+    ax.tick_params(axis="both", labelsize=10)
+    return fig
 
-    fig.add_traces(
-        go.Scatter(
-            x=data["age"],
-            y=outcomes,
-            mode="markers",
-            marker_color="black",
-            marker_opacity=0.1,
-            name="Data",
-        ),
-    )
+
+def plot_profits_lineplot(data, column):
+    simulation_wins = bs.cumulative_sum(data=data, column=column)
+    fig, ax = plt.subplots()
+    sns.lineplot(data=simulation_wins, x=simulation_wins.index, y=column, ax=ax)
+    ax.set_xlabel(fontsize=10)
+    ax.set_ylabel(fontsize=10)
     return fig
