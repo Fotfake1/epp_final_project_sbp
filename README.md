@@ -20,6 +20,17 @@ To build the project, type
 $ pytask
 ```
 
+## Remarks
+Some remarks about the project as a whole: 
+The simulation is at the current state not parallelized, due to time constraints. Because of this issue, the runtime is high. All other parts run in a reasonable timeframe. 
+
+Remarks about the outcomes: 
+The profits in the simulation look promising at first glance. My thoughts on that are the following ones: Even though, the machine learning models work quite well in this context, a good portion of the profits are due to odd-differences between individual sports-betting firms. 
+
+Remarks about next steps: 
+I was quite happy with the intermediate final result I have right now. Even though, I want to built on the webscraper, in order to include a second source of information, possibly more in deep game information as well as current odds, in order to make predictions on games in the near future. On top of that, I want to add some other machine learning algorithms, namely support vector machines and improve on the optimization of the logistic regression and random forests. 
+
+
 ## Credits
 
 This project was created with [cookiecutter](https://github.com/audreyr/cookiecutter)
