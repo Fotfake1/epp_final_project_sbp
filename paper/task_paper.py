@@ -2,10 +2,10 @@
 import shutil
 
 import pytask
-from pytask_latex import compilation_steps as cs
 from epp_final_project_sbp.config import BLD, PAPER_DIR
+from pytask_latex import compilation_steps as cs
 
-documents = ["epp_final_project_sbp", "epp_final_project_sbp_pres"]
+documents = ["epp_final_project_sbp"]
 
 for document in documents:
 

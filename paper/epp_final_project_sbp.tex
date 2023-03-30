@@ -93,40 +93,768 @@ subsequently used to train a logit model, a KNN model and a random forest model.
 In the current version, this piece of software can only hardly be used, to actually predict games, since the data I scrape is always backwards looking.
 For the future, I am intending to use live betting data, to further develop the model.
 
-\begin{figure}[H]
-
-    \centering
-    \includegraphics[width=0.85\textwidth]{../python/figures/smoking_by_marital_status}
-
-    \caption{\emph{Python:} Model predictions of the smoking probability over the
-        lifetime. Each colored line represents a case where marital status is fixed to one
-        of the values present in the data set.}
-    \ label{fig:python-predictions}
-
-\end{figure}
 
 
-\begin{table}[!h]
-    \input{../python/tables/estimation_results.tex}
-    \caption{\ label{tab:python-summary}\emph{Python:} Estimation results of the
-        linear Logistic regression.}
-\end{table}
 
 \section{Data description}
 I am using historical data, which start from 2011 and end roughly one week before the current date. The data consists of general game data and betting odds, from the most important
 betting companies. Based on these information, I compute a set of features, which is described in the plots below.
+One remark: In a normal paper, I would of course be more nuanced with the usage of boxplots and only use the most important ones, but for the purpose of this project, I am aiming to show, that the automation is working.
+\subsection{Premier League}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/corr_plot_E0.png}
+    \caption{Correlations between the features and the outcome premier league}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_AwayTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_AwayTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_AwayTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_AwayTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_AwayTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_AwayTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_AwayTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_consensus_odds_away.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_consensus_odds_draw.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_consensus_odds_home.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_E0_HomeTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+
+
+
+\subsection{Bundesliga}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/corr_plot_D1.png}
+    \caption{Correlations between the features and the outcome Bundesliga}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_AwayTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_AwayTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_AwayTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_AwayTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_AwayTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_AwayTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_AwayTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_consensus_odds_away.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_consensus_odds_draw.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_consensus_odds_home.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_D1_HomeTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+
+
+
+
+\subsection{Italian first league}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/corr_plot_I1.png}
+    \caption{Correlations between the features and the outcome SA}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_AwayTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_AwayTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_AwayTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_AwayTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_AwayTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_AwayTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_AwayTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_consensus_odds_away.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_consensus_odds_draw.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_consensus_odds_home.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_I1_HomeTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+\subsection{Primera Division}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/corr_plot_SP1.png}
+    \caption{Correlations between the features and the outcome Primera Division}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_AwayTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_AwayTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_AwayTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_AwayTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_AwayTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_AwayTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_AwayTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_consensus_odds_away.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_consensus_odds_draw.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_consensus_odds_home.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_corners_got_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_goal_difference_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_goals_against_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_goals_shot_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_shots_on_target_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_mean_shots_on_target_opponents_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/boxplot_SP1_HomeTeam_sum_points_last_5_matches.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
 
 \section{Model Results}
-In the following section, one can find
-\subsection{Premier League}
-\includegraphics[width=\textwidth]{.png}
 \subsection{Bundesliga}
 \subsection{Italian Ligue }
 \subsection{Primera Division}
 \section{Betting simulation}
 \subsection{Bundesliga}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsD1_bet_on_outcome_plain_model_forecast.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsD1_bet_on_outcome_if_in_line_with_consensus_model_forecast.png
+    }
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsD1_bet_on_outcome_if_not_in_line_with_consensus_model_forecast
+    }
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+
 \subsection{Premier League}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsE0_bet_on_outcome_plain_model_forecast.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsE0_bet_on_outcome_if_in_line_with_consensus_model_forecast.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsE0_bet_on_outcome_if_not_in_line_with_consensus_model_forecast}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+
+
 \subsection{Italian Ligue A}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsI1_bet_on_outcome_plain_model_forecast.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsI1_bet_on_outcome_if_in_line_with_consensus_model_forecast.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsI1_bet_on_outcome_if_not_in_line_with_consensus_model_forecast}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+\subsection{Primera Division}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsSP1_bet_on_outcome_plain_model_forecast.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsSP1_bet_on_outcome_if_in_line_with_consensus_model_forecast.png}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\linewidth]{../bld/python/figures/profit_line_plotsSP1_bet_on_outcome_if_not_in_line_with_consensus_model_forecast}
+    \caption{Boxplots}
+    \label{fig:figure2}
+\end{figure}
+
+
+
+
 \section{Conclusion}
 
 % section introduction (end)
