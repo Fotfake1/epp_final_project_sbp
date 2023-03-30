@@ -57,7 +57,7 @@ def get_league(string):
     return league
 
 
-def get_model(produces):
+def get_model_name(produces):
     """Extracts the model out of the path, used multiple times.
 
     throughout the project.

@@ -19,12 +19,13 @@ def league():
 def test_data_preperation_wrong_inputs(data, league):
     """Test if the function raises an error if the input is not a dataframe or the
     number of last games is not an integer."""
-    data = [1, 2, 3, 4]
     with pytest.raises(AssertionError):
-        data_preparation(data, league)
-    league = 5
+        data_false = [1, 2, 3, 4]
+        data_preparation(data=data_false, league=league)
+
     with pytest.raises(AssertionError):
-        data_preparation(data, league)
+        league_false = 5
+        data_preparation(data=data, league=league_false)
 
 
 # def test_normal input

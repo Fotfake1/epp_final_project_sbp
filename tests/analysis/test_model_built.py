@@ -1,40 +1,43 @@
 import pandas as pd
 import pytest
+from epp_final_project_sbp.analysis.model_build import get_model_computed
 from epp_final_project_sbp.config import (
-    CATEGORICAL_FEATURES,
-    CONSIDERED_FEATURES,
-    INTEGER_FEATURES,
-    TEST_DIR,
+    BLD,
 )
-from epp_final_project_sbp.data_management.clean_data import manage_data
+from sklearn.model_selection import (
+    TimeSeriesSplit,
+)
+
+
+@pytest.fixture()
+def model():
+    model = "RF"
+    return model
 
 
 @pytest.fixture()
 def data():
-    return pd.read_csv(TEST_DIR / "data_management" / "data_fixture.csv")
+    data = pd.DataFrame(
+        pd.read_csv(BLD / "python" / "data" / "data_features_added.csv"),
+    )
+    return data
 
 
 @pytest.fixture()
-def feature_info():
-    return TEST_DIR / "data_management" / "Features_fixture.xlsx"
+def tscv():
+    tscv = TimeSeriesSplit(n_splits=5)
+    return tscv
 
 
-def notest(data, feature_info):
-    data = pd.read_csv(TEST_DIR / "data_management" / "data_fixture.csv")
-    feature_info = pd.read_excel(TEST_DIR / "data_management" / "Features_fixture.xlsx")
+def test_model_built_wrong_inputs(data=data, model=model, tscv=tscv, league="E0"):
     with pytest.raises(AssertionError):
-        manage_data(
-            data=[1, 2, 3, 4],
-            name_information=feature_info,
-            considered_features=CONSIDERED_FEATURES,
-            categorical_features=CATEGORICAL_FEATURES,
-            integer_features=INTEGER_FEATURES,
-        )
+        data_false = [1, 2, 3, 4]
+        get_model_computed(model=model, data=data_false, tscv=tscv)
+
     with pytest.raises(AssertionError):
-        manage_data(
-            data=data,
-            name_information=[1, 2, 3, 4],
-            considered_features=CONSIDERED_FEATURES,
-            categorical_features=CATEGORICAL_FEATURES,
-            integer_features=INTEGER_FEATURES,
-        )
+        tscv_false = "TimeSeriesSplit"
+        get_model_computed(model=model, data=data, tscv=tscv_false)
+
+    with pytest.raises(AssertionError):
+        model_false = "SVM"
+        get_model_computed(model=model_false, data=data, tscv=tscv)

@@ -27,7 +27,8 @@ dependencies:
   - statsmodels
   - seaborn
   - scikit-learn
-  - pickle
+  - webdriver-manager
+  - openpyxl
   - selenium
   - bs4
   - toml

@@ -51,11 +51,13 @@ for id_, kwargs in _ID_TO_KWARGS.items():
         """
         data = pd.read_csv(depends_on)
         league = dp.get_league(produces)
-        model = dp.get_model(produces)
+        model = dp.get_model_name(produces)
+
         data = dp.data_preparation(data=data, league=league)
         tscv = TimeSeriesSplit(n_splits=N_SPLIT, max_train_size=None, test_size=None)
+
         train_data, test_data = dp.split_data(data=data, train_share=TRAIN_SHARE)
-        model = mb.get_model(model=model, data=train_data, tscv=tscv)
+        model = mb.get_model_computed(model=model, data=train_data, tscv=tscv)
 
         with open(produces, "wb") as f:
             pickle.dump(model, f)

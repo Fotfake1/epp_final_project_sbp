@@ -49,6 +49,7 @@ CORR_PLOT_VARIABLES = project_info_store["CORR_PLOT_VARIABLES"]
 
 TRAIN_SHARE = project_info_store["TRAIN_SHARE"]
 MIN_FEAT_LOG_REG = project_info_store["MIN_FEAT_LOG_REG"]
+INITIAL_TRAINING_DAYS = project_info_store["INITIAL_TRAINING_DAYS"]
 
 MAX_DEPTH_OF_TREE = project_info_store["MAX_DEPTH_OF_TREE_RF"]
 N_BOOTSTRAP_ITERATIONS = project_info_store["N_BOOTSTRAP_ITERATIONS_RF"]

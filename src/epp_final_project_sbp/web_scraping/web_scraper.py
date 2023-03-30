@@ -31,7 +31,7 @@ def download_data(url, years, beginning_url, league):
     assert isinstance(url, str), "The url must be a string."
 
     try:
-        soup = __get_soup_file(url=url)
+        soup = __get_soup_file(url=url, features="html5lib")
     except:
         raise Exception("The url is invalid. Could not get the soup file.")
 

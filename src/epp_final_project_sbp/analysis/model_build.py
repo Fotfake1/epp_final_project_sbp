@@ -3,7 +3,10 @@ import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import RFECV
 from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import GridSearchCV
+from sklearn.model_selection import (
+    GridSearchCV,
+    TimeSeriesSplit,
+)
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import MinMaxScaler
 
@@ -15,7 +18,7 @@ from epp_final_project_sbp.config import (
 )
 
 
-def get_model(model, data, tscv):
+def get_model_computed(model, data, tscv):
     """Calls the right subfunctions, depending on the model.
 
     Right now, KNN, a optimized RF and an optimized LR are implemented.
@@ -26,6 +29,13 @@ def get_model(model, data, tscv):
         model: model
 
     """
+    assert isinstance(model, str), "model must be a string, please check"
+    assert isinstance(data, pd.DataFrame), "data must be a dataframe, please check"
+    assert isinstance(
+        tscv,
+        TimeSeriesSplit,
+    ), "tscv must be an TimeSeriesSplit object, please check"
+
     if model == "KNN":
         scaler = MinMaxScaler()
         k_range = list(range(1, MAX_NEIGHBORS_KNN))
@@ -62,7 +72,7 @@ def get_model(model, data, tscv):
             cv_split=tscv,
         )
     else:
-        raise ValueError("Model not implemented")
+        raise AssertionError("Model not implemented")
     return model_trained
 
 
