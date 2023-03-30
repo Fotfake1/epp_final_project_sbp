@@ -7,6 +7,7 @@ import pytask
 from epp_final_project_sbp.analysis import data_preparation as dp
 from epp_final_project_sbp.config import (
     BLD,
+    INITIAL_TRAINING_DAYS,
     LEAGUES,
     SIMULATION_RELEVANT_COLUMNS,
     path_to_final_model,
@@ -50,7 +51,7 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
         simulation_results = sim.simulate_forecasting(
             data=data,
-            number_of_initial_training_dates=1130,
+            number_of_initial_training_dates=INITIAL_TRAINING_DAYS,
             model=model,
         )
         simulation_results = simulation_results[SIMULATION_RELEVANT_COLUMNS]
