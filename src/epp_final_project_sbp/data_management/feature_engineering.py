@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 
 def compute_features_last_n_games(df, n):
@@ -10,13 +11,55 @@ def compute_features_last_n_games(df, n):
     Output:
         df: dataframe with the features added.
     """
-    df = __compute_sum_of_points_last_n_games(df=df, number_of_matches=n)
-    df = __compute_mean_shots_on_target(df=df, number_of_matches=n)
-    df = __compute_mean_shots_on_target_opponents(df=df, number_of_matches=n)
-    df = __compute_mean_goals_shot_last_n_matches(df=df, number_of_matches=n)
-    df = __compute_mean_goals_against_team_last_n_matches(df=df, number_of_matches=n)
-    df = __compute_mean_goal_difference_last_n_matches(df=df, number_of_matches=n)
-    df = __compute_mean_corners_got_last_n_games(df=df, number_of_matches=n)
+    assert isinstance(df, pd.DataFrame), "df needs to be a pd.DataFrame"
+    assert isinstance(n, int), "n needs to be an integer"
+
+    try:
+        df = __compute_sum_of_points_last_n_games(df=df, number_of_matches=n)
+    except:
+        raise Exception(
+            "Could not compute sum of points last n games. Please check, if the right datasource is given.",
+        )
+    try:
+        df = __compute_mean_shots_on_target(df=df, number_of_matches=n)
+    except:
+        raise Exception(
+            "Could not compute mean shots on target.  Please check, if the right datasource is given.",
+        )
+    try:
+        df = __compute_mean_shots_on_target_opponents(df=df, number_of_matches=n)
+    except:
+        raise Exception(
+            "Could not compute mean shots on target opponents.  Please check, if the right datasource is given.",
+        )
+    try:
+        df = __compute_mean_goals_shot_last_n_matches(df=df, number_of_matches=n)
+    except:
+        raise Exception(
+            "Could not compute mean goals shot last n matches.  Please check, if the right datasource is given.",
+        )
+    try:
+        df = __compute_mean_goals_against_team_last_n_matches(
+            df=df,
+            number_of_matches=n,
+        )
+    except:
+        raise Exception(
+            "Could not compute mean goals against team last n matches.  Please check, if the right datasource is given.",
+        )
+    try:
+        df = __compute_mean_goal_difference_last_n_matches(df=df, number_of_matches=n)
+    except:
+        raise Exception(
+            "Could not compute mean goal difference last n matches.  Please check, if the right datasource is given.",
+        )
+    try:
+        df = __compute_mean_corners_got_last_n_games(df=df, number_of_matches=n)
+    except:
+        raise Exception(
+            "Could not compute mean corners got last n games.  Please check, if the right datasource is given.",
+        )
+
     df["full_time_result"] = np.where(
         df.full_time_result == "H",
         2,

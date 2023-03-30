@@ -43,19 +43,29 @@ def manage_data(
         name_information=name_information,
         df=data,
     )
-
-    data = data[considered_features]
-
-    data = __convert_to_categorical(df=data, columns=categorical_features)
-    data["Date"] = pd.to_datetime(
-        data["Date"],
-        format="%d/%m/%Y",
-        errors="coerce",
-    ).fillna(pd.to_datetime(data["Date"], format="%d/%m/%y", errors="coerce"))
+    try:
+        data = data[considered_features]
+    except KeyError:
+        pass
+    try:
+        data = __convert_to_categorical(df=data, columns=categorical_features)
+    except KeyError:
+        pass
+    try:
+        data["Date"] = pd.to_datetime(
+            data["Date"],
+            format="%d/%m/%Y",
+            errors="coerce",
+        ).fillna(pd.to_datetime(data["Date"], format="%d/%m/%y", errors="coerce"))
+    except KeyError:
+        pass
 
     data.sort_values(by=["Date"], inplace=True)
     data = data.reset_index()
-    data = __convert_to_integer(df=data, columns=integer_features)
+    try:
+        data = __convert_to_integer(df=data, columns=integer_features)
+    except KeyError:
+        pass
     return data
 
 

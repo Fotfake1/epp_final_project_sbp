@@ -199,7 +199,7 @@ def __bet_on_outcome_if_not_in_line_with_consensus(data, amount, forecast_column
     return data
 
 
-def __find_best_odds(data, HDA_outcome, odds):
+def find_best_odds(data, HDA_outcome, odds):
     """This function finds the best odds for a given outcome. The outcome can be either
     "H", "D" or "A". Based on this, the best odds are searched for this outcome.
 

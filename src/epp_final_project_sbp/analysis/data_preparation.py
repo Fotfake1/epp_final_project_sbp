@@ -17,6 +17,15 @@ def data_preparation(
     Output:
         data: dataframe.
     """
+    assert isinstance(
+        data,
+        pd.DataFrame,
+    ), "data is not a dataframe, please check the datasource"
+    assert isinstance(
+        league,
+        str,
+    ), "league is not a string, please check the league variable"
+
     data = data.drop(columns="index")
     data = data.set_index("Date")
     data = data.loc[data["league"] == league]
@@ -146,3 +155,11 @@ def split_data(data, train_share):
     test_data = data.iloc[train_sample:]
     train_data = data.iloc[:train_sample]
     return train_data, test_data
+
+
+def get_betting_strategy(path, list_of_betting_strategies):
+    """Extracts the betting strategy out of the path."""
+    path = str(path)
+    for strategy in list_of_betting_strategies:
+        if strategy in path:
+            return strategy

@@ -12,6 +12,7 @@ dependencies:
   - pdbpp
   - pip >=21.1
   - plotly>=5.13.0
+  - matplotlib
   - pre-commit
   - pytask-latex
   - pytask-parallel
@@ -24,6 +25,11 @@ dependencies:
   - pyyaml
   - setuptools_scm
   - statsmodels
+  - seaborn
+  - scikit-learn
+  - pickle
+  - selenium
+  - bs4
   - toml
   - pip:
       - -e .

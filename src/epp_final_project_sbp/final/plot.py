@@ -74,7 +74,12 @@ def plot_profits_lineplot(data, column):
     """
     simulation_wins = bs.cumulative_sum(data=data, column=column)
     fig, ax = plt.subplots()
-    sns.lineplot(data=simulation_wins, x=simulation_wins.index, y=column, ax=ax)
+    sns.lineplot(
+        data=simulation_wins,
+        x=simulation_wins.index,
+        y="cumulative_sum" + column,
+        ax=ax,
+    )
     ax.set_xlabel(fontsize=10)
     ax.set_ylabel(fontsize=10)
     return fig
