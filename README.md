@@ -23,7 +23,7 @@ $ pytask
 ## Remarks
 
 ### Project structure: 
-The project is divided into the following mental parts, which can be thought of seperately and which are built on each other: Webscraping, data management, feature creation, model built, model selection and simulation. Each of the mental building blocks is located in a seperate folder, excluded the model built and model selection, which are placed together. The results can be generated through the pytask command, plots are placed in the generated .pdf file.
+The project is divided into the following mental parts, which can be thought of separately and which are built on each other: Webscraping, data management, feature creation, model built, model selection and simulation. Each of the mental building blocks is located in a separately folder, excluded the model built and model selection, which are placed together. The results can be generated through the pytask command, plots are placed in the generated .pdf file.
 
 
 ### Simulation: 
