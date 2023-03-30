@@ -15,12 +15,14 @@ def compute_outcomes_betting_strategies(simulation_data, odds):
         consensus_forecast_bookmakers,
         axis=1,
     )
+
     result_simulation = __bet_on_outcome_plain(
         data=simulation_data,
         amount=1,
         forecast_column="model_forecast",
         odds=odds,
     )
+
     result_simulation = __bet_on_outcome_if_not_in_line_with_consensus(
         data=result_simulation,
         amount=1,
@@ -50,7 +52,7 @@ def __bet_on_outcome_plain(data, amount, forecast_column, odds):
         data: dataframe with the profits of the different betting strategies
 
     """
-    profit_string = "bet_on_outcome_plain_" + forecast_column
+    profit_string = "bet_on_outcome_plain_profit_" + forecast_column
     data[profit_string] = 0
     for i in range(len(data)):
         if data.iloc[i, data.columns.get_loc(forecast_column)] == 2:

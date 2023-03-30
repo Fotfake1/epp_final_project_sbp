@@ -7,7 +7,6 @@ import pytask
 from epp_final_project_sbp.analysis import data_preparation as dp
 from epp_final_project_sbp.config import (
     BETTING_STRATEGIES,
-    FEATURES_CREATED,
     LEAGUES,
     path_to_plots,
     path_to_simulation_results,
@@ -44,18 +43,18 @@ for id_, kwargs in _ID_TO_KWARGS.items():
     def tasks_final_simulation_profits_plot(
         depends_on,
         produces,
-        features_created=FEATURES_CREATED,
         betting_strategies=BETTING_STRATEGIES,
     ):
         """Plot the correlation and the boxplots for the respective league."""
         with open(depends_on, "rb") as f:
             data = pickle.load(f)
         betting_strategy = dp.get_betting_strategy(
-            betting_strategies=betting_strategies,
+            list_of_betting_strategies=betting_strategies,
             path=produces,
         )
+        betting_strategy_name = betting_strategy + "_profit_model_forecast"
         profit_plot = pl.plot_profits_lineplot(
             data=data,
-            column=betting_strategy,
+            column=betting_strategy_name,
         )
-        profit_plot.savefig(produces)
+        profit_plot.savefig(produces, bbox_inches="tight")

@@ -27,7 +27,7 @@ ODD_FEATURES = project_info_store["ODD_FEATURES"]
 
 
 SIMULATION_RELEVANT_COLUMNS = [
-    ODD_FEATURES,
+    *ODD_FEATURES,
     "consensus_odds_home",
     "consensus_odds_draw",
     "consensus_odds_away",
