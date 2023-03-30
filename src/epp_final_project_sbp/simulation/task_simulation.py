@@ -19,15 +19,17 @@ from epp_final_project_sbp.simulation import simulation as sim
 def _create_parametrization(datasource, leagues):
     id_to_kwargs = {}
     datasource = datasource
-    for league in leagues:
-        name = f"{league}"
-        model = path_to_final_model(name)
-        produces = path_to_simulation_results(name)
-        id_to_kwargs[name] = {
-            "depends_on": {"datasource": datasource, "model": model},
-            "produces": produces,
-        }
-
+    try:
+        for league in leagues:
+            name = f"{league}"
+            model = path_to_final_model(name)
+            produces = path_to_simulation_results(name)
+            id_to_kwargs[name] = {
+                "depends_on": {"datasource": datasource, "model": model},
+                "produces": produces,
+            }
+    except AssertionError:
+        pass
     return id_to_kwargs
 
 
@@ -40,7 +42,10 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
     @pytask.mark.task(id=id_, kwargs=kwargs)
     def task_simulate_betting(depends_on, produces):
-        data = pd.read_csv(depends_on["datasource"])
+        try:
+            data = pd.read_csv(depends_on["datasource"])
+        except AssertionError:
+            pass
         league = dp.get_league(depends_on["model"])
         data = dp.data_preparation(data=data, league=league)
 
@@ -57,6 +62,8 @@ for id_, kwargs in _ID_TO_KWARGS.items():
             simulation_data=simulation_results,
             odds=SIMULATION_RELEVANT_COLUMNS,
         )
-
-        with open(produces, "wb") as f:
-            pickle.dump(simulation_results, f)
+        try:
+            with open(produces, "wb") as f:
+                pickle.dump(simulation_results, f)
+        except AssertionError:
+            pass
