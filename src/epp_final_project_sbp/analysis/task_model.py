@@ -46,7 +46,12 @@ for id_, kwargs in _ID_TO_KWARGS.items():
     def task_compute_models(depends_on, produces):
         """task creates all models, which are considered in this project.
 
-        For random
+        The models are saved as pickle files. All models are computed with the same
+        data and a time series cross validation splitter.
+        Input:
+            data_features_added.csv: csv file with the data with the features added.
+        Output:
+            models: pickle files with the models computed.
 
         """
         data = pd.read_csv(depends_on)

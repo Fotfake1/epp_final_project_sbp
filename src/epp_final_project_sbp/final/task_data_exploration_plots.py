@@ -49,7 +49,14 @@ for id_, kwargs in _ID_TO_KWARGS.items():
         produces,
         features_created=FEATURES_CREATED,
     ):
-        """Plot the correlation and the boxplots for the respective league."""
+        """Plot the correlation and the boxplots for the respective league.
+
+        Input:
+            data_features_added.csv: csv file with the data with the features added.
+        Output:
+            corr_plot: png file with the correlation plot.
+
+        """
         league = dp.get_league(produces["corr_plot"])
         data = pd.read_csv(depends_on["datasource"])
 

@@ -8,6 +8,13 @@ from epp_final_project_sbp.config import INFORMATION_SCRAPING, SRC
 
 @pytask.mark.produces(SRC / "data" / "data_raw.csv")
 def task_webscraping(produces):
+    """This task webscrapes the data from the websites and saves it as a csv file.
+
+    The data scraped here is basis for the analysis.
+    Output:
+        data_raw.csv: csv file with the data scraped from the websites.
+
+    """
     data = pd.DataFrame()
     data_sources = {}
     information = INFORMATION_SCRAPING

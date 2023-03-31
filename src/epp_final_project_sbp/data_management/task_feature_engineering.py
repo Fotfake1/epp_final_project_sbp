@@ -13,7 +13,15 @@ from epp_final_project_sbp.config import BLD, ODD_FEATURES
 )
 @pytask.mark.produces(BLD / "python" / "data" / "data_features_added.csv")
 def task_feature_engineering(depends_on, produces):
-    """Feature engineering."""
+    """This task computes features used from the machine learning algorithms.
+
+    The features are computed from the odds and the results of the games.
+    Input:
+        data_cleaned.csv: csv file with the data cleaned.
+    Output:
+        data_features_added.csv: csv file with the data with the features added.
+
+    """
     odd_features = ODD_FEATURES
 
     data = pd.read_csv(depends_on["data"])

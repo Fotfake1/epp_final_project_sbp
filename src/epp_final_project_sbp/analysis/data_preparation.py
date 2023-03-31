@@ -158,7 +158,15 @@ def split_data(data, train_share):
 
 
 def get_betting_strategy(path, list_of_betting_strategies):
-    """Extracts the betting strategy out of the path."""
+    """Extracts the betting strategy out of the path.
+
+    Input:
+        path: str
+        list_of_betting_strategies: list of str
+    Output:
+        strategy: str
+
+    """
     path = str(path)
     for strategy in list_of_betting_strategies:
         if strategy in path:

@@ -25,7 +25,7 @@ def get_model_computed(model, data, tscv):
     Input:
         model: string
         data: dataframe
-    Output:
+    Output:s
         model: model
 
     """

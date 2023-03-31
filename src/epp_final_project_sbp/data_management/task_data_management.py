@@ -24,6 +24,11 @@ def task_clean_data(depends_on, produces):
     """This task handles initial data cleaning, sorting the data and ensuring the.
 
     right data types.
+    Input:
+        data_raw.csv: csv file with the data scraped from the websites.
+        Features.xlsx: excel file with the information about the features.
+    Output:
+        data_cleaned.csv: csv file with the data cleaned.
 
     """
     data = pd.read_csv(depends_on["data"])

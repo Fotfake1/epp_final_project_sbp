@@ -47,7 +47,16 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
     @pytask.mark.task(id=id_, kwargs=kwargs)
     def task_model_selection(depends_on, produces):
-        """task creates all models, which are considered in this project."""
+        """task selects the best out of the given models for each league and saves it.
+
+        Input:
+             data_features_added.csv: csv file with the data with the features added.
+             models: pickle files with the models computed.
+         Output:
+             final_model: pickle file with the final model.
+             performance_store: pickle file with the performance store.
+
+        """
         data = pd.read_csv(depends_on["datasource"])
         league = dp.get_league(
             depends_on["models"][list(depends_on["models"].keys())[0]],

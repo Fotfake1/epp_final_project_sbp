@@ -21,6 +21,15 @@ To build the project, type
 $ pytask
 ```
 
+## Prerequisites: Webscraping:
+
+For the webscraper to be functional, one has to have Chrome installed on his / her
+machine. The environment is tested only on mac computers, due to the lack of windows
+computers in my reach. If the webscraper does not work on your machine, I provide a
+downloadable file
+[Download](https://drive.google.com/file/d/1798GSbetZ_XT9EQNu5lK6quG3FtoDwiq/view?usp=share_link),
+which than can be put in the src/data folder.
+
 ## Remarks
 
 ### General:

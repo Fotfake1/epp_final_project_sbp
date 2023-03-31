@@ -131,6 +131,13 @@ def __combine_test_and_predict(
 
 
 def __consensus_forecast_bookmakers(row):
+    """This function computes the consensus forecast across the bookmakers for one given
+    row.
+
+    Input row: row of the dataframe
+    Output: int, 0 for draw, 1 for home win, 2 for away win
+
+    """
     if (
         row["consensus_odds_home"] < row["consensus_odds_draw"]
         and row["consensus_odds_home"] < row["consensus_odds_away"]

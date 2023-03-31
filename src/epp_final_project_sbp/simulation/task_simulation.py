@@ -43,6 +43,16 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
     @pytask.mark.task(id=id_, kwargs=kwargs)
     def task_simulate_betting(depends_on, produces):
+        """task simulates the three considered betting strategies, based on the model
+        outcomes for each league and saves it.
+
+        Input:
+            data_features_added.csv: csv file with the data with the features added.
+            final_model: pickle file with the final model.
+        Output:
+            simulation_results: pickle file with the simulation results.
+
+        """
         data = pd.read_csv(depends_on["datasource"])
         league = dp.get_league(depends_on["model"])
         data = dp.data_preparation(data=data, league=league)

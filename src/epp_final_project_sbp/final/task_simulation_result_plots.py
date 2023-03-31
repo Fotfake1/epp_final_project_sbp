@@ -45,7 +45,14 @@ for id_, kwargs in _ID_TO_KWARGS.items():
         produces,
         betting_strategies=BETTING_STRATEGIES,
     ):
-        """Plot the correlation and the boxplots for the respective league."""
+        """Plot the profits for the respective league and betting strategy.
+
+        Input:
+            simulation_results: pickle file with the simulation results.
+        Output:
+            profit_plot: png file with the profit plot.
+
+        """
         with open(depends_on, "rb") as f:
             data = pickle.load(f)
         betting_strategy = dp.get_betting_strategy(
