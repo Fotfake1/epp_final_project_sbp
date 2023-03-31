@@ -28,18 +28,20 @@ machine. The environment is tested only on mac computers, due to the lack of win
 computers in my reach. If the webscraper does not work on your machine, I provide a
 downloadable file
 [Download](https://drive.google.com/file/d/1798GSbetZ_XT9EQNu5lK6quG3FtoDwiq/view?usp=share_link),
-which than can be put in the src/data folder.
+which than can be put in the src/data folder. With that file in place, the other parts
+of the program should be executable without problem.
 
 ## Remarks
 
 ### General:
 
-To get a first glance on the project, I suggest increasing the variable
-INITIAL_TRAINING_DAYS to 1000, the variable MAX_NEIGHBORS_KNN to 5, the variable
-N_BOOTSTRAP_ITERATIONS_RF to 100. In the current state, the program runs for roughly 6
-hours in a macbook with M1 chip. Masking the simulation task can also drastically reduce
-the runtime, but from my point of view the simulation task is the beauty of the program,
-since it takes the computed algorithms to a "real world" example.
+To get pytask to actually generate the pdf, one has to start pytask one layer above the
+landing folder in the folder structure. To get a first glance on the project, I suggest
+increasing the variable INITIAL_TRAINING_DAYS to 800, the variable MAX_NEIGHBORS_KNN to
+5, the variable N_BOOTSTRAP_ITERATIONS_RF to 300. In the current state, the program runs
+for roughly 6 hours in a macbook with M1 chip. Masking the simulation task can also
+drastically reduce the runtime, but from my point of view the simulation task is the
+beauty of the program, since it takes the computed algorithms to a "real world" example.
 
 ### Project structure:
 
@@ -57,18 +59,18 @@ Because of this issue, the runtime is high. All other parts run in a reasonable
 timeframe.
 
 Remarks about the outcomes: The profits in the simulation look promising at first
-glance. My thoughts on that are the following ones: Even though, the machine learning
-models work quite well in this context, a good portion of the profits are due to
-odd-differences between individual sports-betting firms.
+glance. My thoughts on that are the following ones: Even though, the considered machine
+learning models work quite well in this context, a good portion of the profits are due
+to odd-differences between individual sports-betting firms.
 
-Remarks about next steps: I was quite happy with the intermediate final result I have
-right now. Even though, I want to built on the webscraper, in order to include a second
-source of information, possibly more in deep game information as well as current odds,
-in order to make predictions on games in the near future. On top of that, I want to add
-some other machine learning algorithms, namely support vector machines and improve on
-the optimization of the logistic regression and random forests.
+Next steps: I was quite happy with the intermediate final result I have right now. Even
+though, I want to built on the webscraper, in order to include a second source of
+information, possibly more in deep game information as well as current odds, in order to
+make predictions on games in the near future. On top of that, I want to add some other
+machine learning algorithms, namely support vector machines and improve on the
+optimization of the logistic regression and random forests.
 
-#### Project Specifics file explanations:
+#### Project specifics file explanations:
 
 In the following part, one can find explanations for the global variables, stored in the
 project_specific.yaml file in the src/data folder.

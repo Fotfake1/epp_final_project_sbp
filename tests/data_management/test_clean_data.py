@@ -20,6 +20,8 @@ def feature_info():
 
 
 def test_manage_data_wrong_inputs(data, feature_info):
+    """Test if the function raises an error if the input is not a dataframe or the
+    number of last games is not an integer."""
     data = pd.read_csv(TEST_DIR / "data_management" / "data_fixture.csv")
     feature_info = pd.read_excel(TEST_DIR / "data_management" / "Features_fixture.xlsx")
     with pytest.raises(AssertionError):

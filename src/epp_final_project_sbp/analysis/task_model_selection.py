@@ -75,5 +75,5 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
         with open(produces["model"], "wb") as f:
             pickle.dump(model, f)
-        with open(produces["performance_store"], "wb") as f:
-            pickle.dump(performances, f)
+        with open(produces["performance_store"], "w") as f:
+            f.write(performances.to_latex())

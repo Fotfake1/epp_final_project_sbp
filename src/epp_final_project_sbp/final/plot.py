@@ -81,5 +81,5 @@ def plot_profits_lineplot(data, column):
         ax=ax,
     )
     ax.set_xlabel(fontsize=10, xlabel="Simulation Rounds")
-    ax.set_ylabel(fontsize=10, ylabel="Cumulative Sum of Profits")
+    ax.set_ylabel(fontsize=10, ylabel="Cumulative Sum" + column)
     return fig

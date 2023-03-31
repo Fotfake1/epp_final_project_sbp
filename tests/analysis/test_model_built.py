@@ -25,6 +25,8 @@ def tscv():
 
 
 def test_model_built_wrong_inputs(data=wrong_data, model=model, tscv=tscv, league="E0"):
+    """Test if the function raises an error if the input is not a dataframe or the
+    number of last games is not an integer."""
     with pytest.raises(AssertionError):
         data_false = [1, 2, 3, 4]
         get_model_computed(model=model, data=data_false, tscv=tscv)

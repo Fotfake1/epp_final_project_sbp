@@ -77,7 +77,7 @@ def path_to_final_model(name):
 
 
 def path_to_performance_store(name):
-    return BLD / "python" / "models" / f"performance_store_{name}.pkl"
+    return BLD / "python" / "tables" / f"performance_store_{name}.tex"
 
 
 def path_to_simulation_results(name):
@@ -86,7 +86,3 @@ def path_to_simulation_results(name):
 
 def path_to_plots(name):
     return BLD / "python" / "figures" / f"{name}.png"
-
-
-def path_to_tables(name):
-    pass
