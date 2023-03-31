@@ -69,7 +69,7 @@ def path_to_processed_models(name):
 
 
 def path_to_input_model(name):
-    return BLD / "data" / f"processed_{name}.pkl"
+    return BLD / "python" / "data" / f"processed_{name}.pkl"
 
 
 def path_to_final_model(name):

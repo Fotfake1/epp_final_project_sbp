@@ -26,8 +26,3 @@ def test_data_preperation_wrong_inputs(data, league):
     with pytest.raises(AssertionError):
         league_false = 5
         data_preparation(data=data, league=league_false)
-
-
-# def test_normal input
-
-# def test_not_cleaned_data

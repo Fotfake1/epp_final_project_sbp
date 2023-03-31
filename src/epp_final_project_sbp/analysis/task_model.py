@@ -50,8 +50,8 @@ for id_, kwargs in _ID_TO_KWARGS.items():
 
         """
         data = pd.read_csv(depends_on)
-        league = dp.get_league(produces)
-        model = dp.get_model_name(produces)
+        league = dp.get_league(string=produces)
+        model = dp.get_model_name(produces=produces)
 
         data = dp.data_preparation(data=data, league=league)
         tscv = TimeSeriesSplit(n_splits=N_SPLIT, max_train_size=None, test_size=None)

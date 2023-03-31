@@ -1,3 +1,5 @@
+import warnings
+
 import pandas as pd
 
 
@@ -52,6 +54,7 @@ def __bet_on_outcome_plain(data, amount, forecast_column, odds):
         data: dataframe with the profits of the different betting strategies
 
     """
+    warnings.filterwarnings("ignore")
     profit_string = "bet_on_outcome_plain_profit_" + forecast_column
     data[profit_string] = 0
     for i in range(len(data)):
@@ -103,6 +106,7 @@ def __bet_on_outcome_if_in_line_with_consensus(data, amount, forecast_column, od
         data: dataframe with the profits of the different betting strategies
 
     """
+    warnings.filterwarnings("ignore")
     profit_string = "bet_on_outcome_if_in_line_with_consensus_profit_" + forecast_column
     data[profit_string] = 0
     for i in range(len(data)):
@@ -157,6 +161,7 @@ def __bet_on_outcome_if_not_in_line_with_consensus(data, amount, forecast_column
         data: dataframe with the profits of the different betting strategies
 
     """
+    warnings.filterwarnings("ignore")
     profit_string = (
         "bet_on_outcome_if_not_in_line_with_consensus_profit_" + forecast_column
     )

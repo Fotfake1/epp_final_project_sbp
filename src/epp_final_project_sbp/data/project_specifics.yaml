@@ -47,6 +47,8 @@ INFORMATION_SCRAPING:
 
 LEAGUES:
   - D1
+
+Backup:
   - SP1
   - E0
   - I1
@@ -270,7 +272,7 @@ BETTING_STRATEGIES:
   - bet_on_outcome_if_not_in_line_with_consensus
 
 
-INITIAL_TRAINING_DAYS: 600
+INITIAL_TRAINING_DAYS: 1130
 TRAIN_SHARE: 0.8
 MIN_FEAT_LOG_REG: 4
 

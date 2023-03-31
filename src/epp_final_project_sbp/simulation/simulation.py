@@ -1,3 +1,5 @@
+import warnings
+
 import numpy as np
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
@@ -59,6 +61,7 @@ def __simulate_date(date, data, model, scaler):
         subset_test=subset_test,
         scaler=scaler,
     )
+    warnings.filterwarnings("ignore")
     subset_test["model_forecast"] = __model_forecast(
         X_train=X_train,
         y_train=y_train,

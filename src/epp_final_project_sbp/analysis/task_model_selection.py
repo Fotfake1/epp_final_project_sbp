@@ -10,8 +10,8 @@ from epp_final_project_sbp.config import (
     LEAGUES,
     MODELS,
     path_to_final_model,
-    path_to_input_model,
     path_to_performance_store,
+    path_to_processed_models,
 )
 
 
@@ -22,7 +22,7 @@ def _create_parametrization(datasource, leagues, models):
         model_paths = {}
         for m in models:
             modelname = f"{league}_{m}"
-            model_path = path_to_input_model(modelname)
+            model_path = path_to_processed_models(modelname)
             model_paths[m] = model_path
         final_model_path = path_to_final_model(name)
         performance_store = path_to_performance_store(name)

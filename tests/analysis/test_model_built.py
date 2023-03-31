@@ -1,9 +1,6 @@
 import pandas as pd
 import pytest
 from epp_final_project_sbp.analysis.model_build import get_model_computed
-from epp_final_project_sbp.config import (
-    BLD,
-)
 from sklearn.model_selection import (
     TimeSeriesSplit,
 )
@@ -16,10 +13,8 @@ def model():
 
 
 @pytest.fixture()
-def data():
-    data = pd.DataFrame(
-        pd.read_csv(BLD / "python" / "data" / "data_features_added.csv"),
-    )
+def wrong_data():
+    data = pd.DataFrame([1, 2, 3, 4], columns=["test_wrong_data"])
     return data
 
 
@@ -29,7 +24,7 @@ def tscv():
     return tscv
 
 
-def test_model_built_wrong_inputs(data=data, model=model, tscv=tscv, league="E0"):
+def test_model_built_wrong_inputs(data=wrong_data, model=model, tscv=tscv, league="E0"):
     with pytest.raises(AssertionError):
         data_false = [1, 2, 3, 4]
         get_model_computed(model=model, data=data_false, tscv=tscv)
